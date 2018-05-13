@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="left_pane_weight">1</integer>
+    <integer name="right_pane_weight">2</integer>
+    <dimen name="header_vertical_padding">8dp</dimen>
+</resources>
