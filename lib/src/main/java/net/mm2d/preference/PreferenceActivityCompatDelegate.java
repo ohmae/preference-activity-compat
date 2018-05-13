@@ -7,8 +7,6 @@
 
 package net.mm2d.preference;
 
-import android.animation.LayoutTransition;
-import android.app.FragmentBreadCrumbs;
 import android.arch.lifecycle.Lifecycle.State;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -33,6 +31,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -88,7 +87,7 @@ public class PreferenceActivityCompatDelegate {
     private ViewGroup mPrefsContainer;
     private CharSequence mActivityTitle;
     private ViewGroup mHeadersContainer;
-    private FragmentBreadCrumbs mFragmentBreadCrumbs;
+    private TextView mBreadCrumbTitle;
     private boolean mSinglePane;
     private Header mCurHeader;
 
@@ -116,6 +115,7 @@ public class PreferenceActivityCompatDelegate {
         }
     };
     private final Handler mHandler = new Handler();
+    private Fragment mFragment;
 
     public static final long HEADER_ID_UNDEFINED = -1;
 
@@ -142,17 +142,6 @@ public class PreferenceActivityCompatDelegate {
 
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         mActivity.setContentView(R.layout.content_dual);
-        final View crumbs = mActivity.findViewById(R.id.title);
-        if (crumbs instanceof FragmentBreadCrumbs) {
-            mFragmentBreadCrumbs = (FragmentBreadCrumbs) crumbs;
-            if (mSinglePane) {
-                mFragmentBreadCrumbs.setVisibility(View.GONE);
-                final View bcSection = mActivity.findViewById(R.id.breadcrumb_section);
-                if (bcSection != null) bcSection.setVisibility(View.GONE);
-            }
-            mFragmentBreadCrumbs.setMaxVisible(2);
-            mFragmentBreadCrumbs.setActivity(mActivity);
-        }
         mList = mActivity.findViewById(R.id.list);
         mList.setOnItemClickListener(mOnClickListener);
         if (mFinishedStart) {
@@ -165,6 +154,12 @@ public class PreferenceActivityCompatDelegate {
         mHeadersContainer = mActivity.findViewById(R.id.headers);
         final boolean hidingHeaders = onIsHidingHeaders();
         mSinglePane = hidingHeaders || !onIsMultiPane();
+        final View breadCrumbSection = mActivity.findViewById(R.id.breadcrumb_section);
+        mBreadCrumbTitle = mActivity.findViewById(R.id.bread_crumb_title);
+        if (mSinglePane && breadCrumbSection != null && mBreadCrumbTitle != null) {
+            mBreadCrumbTitle.setVisibility(View.GONE);
+            breadCrumbSection.setVisibility(View.GONE);
+        }
         final Intent intent = mActivity.getIntent();
         final String initialFragment = intent.getStringExtra(EXTRA_SHOW_FRAGMENT);
         final Bundle initialArguments = intent.getBundleExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS);
@@ -218,8 +213,8 @@ public class PreferenceActivityCompatDelegate {
             } else {
                 mPrefsContainer.setVisibility(View.GONE);
             }
-            final ViewGroup container = mActivity.findViewById(R.id.prefs_container);
-            container.setLayoutTransition(new LayoutTransition());
+            //final ViewGroup container = mActivity.findViewById(R.id.prefs_container);
+            //container.setLayoutTransition(new LayoutTransition());
         } else {
             if (mHeaders.size() > 0 && mCurHeader != null) {
                 setSelectedHeader(mCurHeader);
@@ -228,10 +223,18 @@ public class PreferenceActivityCompatDelegate {
     }
 
     public boolean onBackPressed() {
-        if (mCurHeader != null && mSinglePane && mActivity.getSupportFragmentManager().getBackStackEntryCount() == 0
+        if (mCurHeader != null
+                && mSinglePane
+                && mActivity.getSupportFragmentManager().getBackStackEntryCount() == 0
                 && mActivity.getIntent().getStringExtra(EXTRA_SHOW_FRAGMENT) == null) {
+            if (mFragment != null) {
+                mActivity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .remove(mFragment)
+                        .commitAllowingStateLoss();
+                mFragment = null;
+            }
             mCurHeader = null;
-
             mPrefsContainer.setVisibility(View.GONE);
             mHeadersContainer.setVisibility(View.VISIBLE);
             if (mActivityTitle != null) {
@@ -478,15 +481,14 @@ public class PreferenceActivityCompatDelegate {
     public void showBreadCrumbs(
             final CharSequence title,
             final CharSequence shortTitle) {
-        if (mFragmentBreadCrumbs == null) {
+        if (mBreadCrumbTitle == null) {
             mActivity.setTitle(title);
             return;
         }
-        if (mFragmentBreadCrumbs.getVisibility() != View.VISIBLE) {
+        if (mBreadCrumbTitle.getVisibility() != View.VISIBLE) {
             mActivity.setTitle(title);
         } else {
-            mFragmentBreadCrumbs.setTitle(title, shortTitle);
-            mFragmentBreadCrumbs.setParentTitle(null, null, null);
+            mBreadCrumbTitle.setText(title);
         }
     }
 
@@ -515,18 +517,20 @@ public class PreferenceActivityCompatDelegate {
     private void switchToHeaderInner(
             final String fragmentName,
             final Bundle args) {
-        mActivity.getSupportFragmentManager().popBackStack(BACK_STACK_PREFS, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        final FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
+        fragmentManager.popBackStack(BACK_STACK_PREFS, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         if (!mConnector.isValidFragment(fragmentName)) {
             throw new IllegalArgumentException("Invalid fragment for this activity: " + fragmentName);
         }
 
         final Fragment f = Fragment.instantiate(mActivity, fragmentName, args);
-        final FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(mSinglePane
                 ? FragmentTransaction.TRANSIT_NONE
                 : FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         transaction.replace(R.id.prefs, f);
         transaction.commitAllowingStateLoss();
+        mFragment = f;
 
         if (mSinglePane && mPrefsContainer.getVisibility() == View.GONE) {
             mPrefsContainer.setVisibility(View.VISIBLE);
@@ -545,7 +549,7 @@ public class PreferenceActivityCompatDelegate {
             }
         }
         setSelectedHeader(selectedHeader);
-        switchToHeaderInner(fragmentName, args);
+        mHandler.post(() -> switchToHeaderInner(fragmentName, args));
     }
 
     public void switchToHeader(final Header header) {
@@ -555,8 +559,8 @@ public class PreferenceActivityCompatDelegate {
             if (header.fragment == null) {
                 throw new IllegalStateException("can't switch to header that has no fragment");
             }
-            switchToHeaderInner(header.fragment, header.fragmentArguments);
             setSelectedHeader(header);
+            mHandler.post(() -> switchToHeaderInner(header.fragment, header.fragmentArguments));
         }
     }
 

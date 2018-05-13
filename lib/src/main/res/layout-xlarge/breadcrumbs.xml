@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/breadcrumb_section"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="72dp"
     android:layout_marginEnd="@dimen/breadcrumbs_padding_end"
     android:layout_marginLeft="@dimen/breadcrumbs_padding_start"
     android:layout_marginRight="@dimen/breadcrumbs_padding_end"
     android:layout_marginStart="@dimen/breadcrumbs_padding_start"
-    android:orientation="vertical"
+    android:gravity="center_vertical|start"
+    android:paddingBottom="8dp"
+    android:paddingTop="16dp"
     >
 
-    <android.app.FragmentBreadCrumbs
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:gravity="center_vertical|start"
-        android:paddingBottom="8dp"
-        android:paddingTop="16dp"
+    <TextView
+        android:id="@+id/bread_crumb_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingEnd="8dip"
+        android:paddingStart="8dip"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="?android:attr/textColorPrimary"
         />
-</LinearLayout>
+</FrameLayout>
