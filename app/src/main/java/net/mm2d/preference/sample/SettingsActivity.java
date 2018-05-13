@@ -14,6 +14,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.view.MenuItem;
 
+import net.mm2d.preference.Header;
 import net.mm2d.preference.PreferenceActivityCompat;
 
 import java.util.List;
@@ -71,7 +72,8 @@ public class SettingsActivity extends PreferenceActivityCompat {
         loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
-    protected boolean isValidFragment(final String fragmentName) {
+    @Override
+    public boolean isValidFragment(final String fragmentName) {
         return PreferenceFragmentCompat.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
