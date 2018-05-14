@@ -20,21 +20,15 @@ import android.text.TextUtils;
  */
 public final class Header implements Parcelable {
     public long id = PreferenceActivityCompatDelegate.HEADER_ID_UNDEFINED;
-
     @StringRes
     public int titleRes;
-
     public CharSequence title;
-
     @StringRes
     public int summaryRes;
     public CharSequence summary;
     @StringRes
     public int breadCrumbTitleRes;
     public CharSequence breadCrumbTitle;
-    @StringRes
-    public int breadCrumbShortTitleRes;
-    public CharSequence breadCrumbShortTitle;
     public int iconRes;
     public String fragment;
     public Bundle fragmentArguments;
@@ -65,13 +59,6 @@ public final class Header implements Parcelable {
         return breadCrumbTitle;
     }
 
-    public CharSequence getBreadCrumbShortTitle(final Resources res) {
-        if (breadCrumbShortTitleRes != 0) {
-            return res.getText(breadCrumbShortTitleRes);
-        }
-        return breadCrumbShortTitle;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -88,8 +75,6 @@ public final class Header implements Parcelable {
         TextUtils.writeToParcel(summary, dest, flags);
         dest.writeInt(breadCrumbTitleRes);
         TextUtils.writeToParcel(breadCrumbTitle, dest, flags);
-        dest.writeInt(breadCrumbShortTitleRes);
-        TextUtils.writeToParcel(breadCrumbShortTitle, dest, flags);
         dest.writeInt(iconRes);
         dest.writeString(fragment);
         dest.writeBundle(fragmentArguments);
@@ -110,8 +95,6 @@ public final class Header implements Parcelable {
         summary = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
         breadCrumbTitleRes = in.readInt();
         breadCrumbTitle = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
-        breadCrumbShortTitleRes = in.readInt();
-        breadCrumbShortTitle = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
         iconRes = in.readInt();
         fragment = in.readString();
         fragmentArguments = in.readBundle(getClass().getClassLoader());

@@ -8,9 +8,6 @@
 package net.mm2d.preference;
 
 import android.arch.lifecycle.Lifecycle.State;
-import android.content.Intent;
-import android.content.res.TypedArray;
-import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -20,9 +17,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.util.Xml;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -33,10 +27,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,37 +41,23 @@ public class PreferenceActivityCompatDelegate {
 
         boolean isValidFragment(String fragmentName);
     }
-
-    @NonNull
-    private final FragmentActivity mActivity;
-    @NonNull
-    private final Connector mConnector;
-
-    public PreferenceActivityCompatDelegate(
-            @NonNull final FragmentActivity activity,
-            @NonNull final Connector connector) {
-        mActivity = activity;
-        mConnector = connector;
-    }
+    public static final long HEADER_ID_UNDEFINED = -1;
 
     private static final String HEADERS_TAG = ":android:headers";
     private static final String CUR_HEADER_TAG = ":android:cur_header";
     private static final String BACK_STACK_PREFS = ":android:prefs";
 
+    @NonNull
+    private final FragmentActivity mActivity;
+    @NonNull
+    private final Connector mConnector;
+    @NonNull
+    private final AdapterView.OnItemClickListener mOnClickListener = this::onListItemClick;
+    @NonNull
+    private final ArrayList<Header> mHeaders = new ArrayList<>();
     private ListAdapter mAdapter;
     private ListView mList;
-
     private boolean mFinishedStart = false;
-
-    private final Runnable mRequestFocus = new Runnable() {
-        public void run() {
-            mList.focusableViewAvailable(mList);
-        }
-    };
-
-    private final AdapterView.OnItemClickListener mOnClickListener = this::onListItemClick;
-
-    private final ArrayList<Header> mHeaders = new ArrayList<>();
     private FrameLayout mListFooter;
     private ViewGroup mPrefsContainer;
     private CharSequence mActivityTitle;
@@ -89,6 +65,14 @@ public class PreferenceActivityCompatDelegate {
     private TextView mBreadCrumbTitle;
     private boolean mSinglePane;
     private Header mCurHeader;
+    private final Handler mHandler = new Handler();
+    private Fragment mFragment;
+
+    private final Runnable mRequestFocus = new Runnable() {
+        public void run() {
+            mList.focusableViewAvailable(mList);
+        }
+    };
 
     private final Runnable mBuildHeaders = new Runnable() {
         @Override
@@ -106,30 +90,12 @@ public class PreferenceActivityCompatDelegate {
             }
         }
     };
-    private final Handler mHandler = new Handler();
-    private Fragment mFragment;
 
-    public static final long HEADER_ID_UNDEFINED = -1;
-
-    private void setListAdapter(final ListAdapter adapter) {
-        mAdapter = adapter;
-        mList.setAdapter(adapter);
-    }
-
-    private void setSelection(final int position) {
-        mList.setSelection(position);
-    }
-
-    public int getSelectedItemPosition() {
-        return mList.getSelectedItemPosition();
-    }
-
-    private ListView getListView() {
-        return mList;
-    }
-
-    private ListAdapter getListAdapter() {
-        return mAdapter;
+    public PreferenceActivityCompatDelegate(
+            @NonNull final FragmentActivity activity,
+            @NonNull final Connector connector) {
+        mActivity = activity;
+        mConnector = connector;
     }
 
     public void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -164,7 +130,7 @@ public class PreferenceActivityCompatDelegate {
                     switchToHeader(onGetInitialHeader());
                 }
             } else {
-                showBreadCrumbs(mActivityTitle, null);
+                showBreadCrumbs(mActivityTitle);
             }
         } else {
             mConnector.onBuildHeaders(mHeaders);
@@ -189,6 +155,31 @@ public class PreferenceActivityCompatDelegate {
         }
     }
 
+    public void onDestroy() {
+        mHandler.removeCallbacks(mBuildHeaders);
+        mHandler.removeCallbacks(mRequestFocus);
+    }
+
+    public void onSaveInstanceState(final Bundle outState) {
+        if (mHeaders.size() > 0) {
+            outState.putParcelableArrayList(HEADERS_TAG, mHeaders);
+            if (mCurHeader != null) {
+                final int index = mHeaders.indexOf(mCurHeader);
+                if (index >= 0) {
+                    outState.putInt(CUR_HEADER_TAG, index);
+                }
+            }
+        }
+    }
+
+    public void onRestoreInstanceState(final Bundle state) {
+        if (!mSinglePane) {
+            if (mCurHeader != null) {
+                setSelectedHeader(mCurHeader);
+            }
+        }
+    }
+
     public boolean onBackPressed() {
         if (mCurHeader != null
                 && mSinglePane
@@ -204,12 +195,25 @@ public class PreferenceActivityCompatDelegate {
             mPrefsContainer.setVisibility(View.GONE);
             mHeadersContainer.setVisibility(View.VISIBLE);
             if (mActivityTitle != null) {
-                showBreadCrumbs(mActivityTitle, null);
+                showBreadCrumbs(mActivityTitle);
             }
             getListView().clearChoices();
             return true;
         }
         return false;
+    }
+
+    private void setListAdapter(final ListAdapter adapter) {
+        mAdapter = adapter;
+        mList.setAdapter(adapter);
+    }
+
+    public int getSelectedItemPosition() {
+        return mList.getSelectedItemPosition();
+    }
+
+    private ListView getListView() {
+        return mList;
     }
 
     public boolean hasHeaders() {
@@ -240,135 +244,9 @@ public class PreferenceActivityCompatDelegate {
     }
 
     public void loadHeadersFromResource(
-            @XmlRes int resId,
-            final List<Header> target) {
-        XmlResourceParser parser = null;
-        try {
-            parser = mActivity.getResources().getXml(resId);
-            final AttributeSet attrs = Xml.asAttributeSet(parser);
-
-            while (true) {
-                final int type = parser.next();
-                if (type == XmlPullParser.END_DOCUMENT ||
-                        type == XmlPullParser.START_TAG) {
-                    break;
-                }
-            }
-
-            String nodeName = parser.getName();
-            if (!"preference-headers".equals(nodeName)) {
-                throw new RuntimeException(
-                        "XML document must start with <preference-headers> tag; found"
-                                + nodeName + " at " + parser.getPositionDescription());
-            }
-
-            Bundle curBundle = null;
-
-            final int outerDepth = parser.getDepth();
-            while (true) {
-                final int type = parser.next();
-                if (type == XmlPullParser.END_DOCUMENT) {
-                    break;
-                }
-                if (type == XmlPullParser.END_TAG && parser.getDepth() <= outerDepth) {
-                    break;
-                }
-                if (type == XmlPullParser.END_TAG || type == XmlPullParser.TEXT) {
-                    continue;
-                }
-
-                nodeName = parser.getName();
-                if ("header".equals(nodeName)) {
-                    final Header header = new Header();
-
-                    final TypedArray sa = mActivity.obtainStyledAttributes(attrs, R.styleable.PreferenceHeader);
-                    header.id = sa.getResourceId(R.styleable.PreferenceHeader_id, (int) HEADER_ID_UNDEFINED);
-                    TypedValue tv = sa.peekValue(R.styleable.PreferenceHeader_title);
-                    if (tv != null && tv.type == TypedValue.TYPE_STRING) {
-                        if (tv.resourceId != 0) {
-                            header.titleRes = tv.resourceId;
-                        } else {
-                            header.title = tv.string;
-                        }
-                    }
-                    tv = sa.peekValue(R.styleable.PreferenceHeader_summary);
-                    if (tv != null && tv.type == TypedValue.TYPE_STRING) {
-                        if (tv.resourceId != 0) {
-                            header.summaryRes = tv.resourceId;
-                        } else {
-                            header.summary = tv.string;
-                        }
-                    }
-                    tv = sa.peekValue(R.styleable.PreferenceHeader_breadCrumbTitle);
-                    if (tv != null && tv.type == TypedValue.TYPE_STRING) {
-                        if (tv.resourceId != 0) {
-                            header.breadCrumbTitleRes = tv.resourceId;
-                        } else {
-                            header.breadCrumbTitle = tv.string;
-                        }
-                    }
-                    tv = sa.peekValue(R.styleable.PreferenceHeader_breadCrumbShortTitle);
-                    if (tv != null && tv.type == TypedValue.TYPE_STRING) {
-                        if (tv.resourceId != 0) {
-                            header.breadCrumbShortTitleRes = tv.resourceId;
-                        } else {
-                            header.breadCrumbShortTitle = tv.string;
-                        }
-                    }
-                    header.iconRes = sa.getResourceId(R.styleable.PreferenceHeader_icon, 0);
-                    header.fragment = sa.getString(R.styleable.PreferenceHeader_fragment);
-                    sa.recycle();
-
-                    if (curBundle == null) {
-                        curBundle = new Bundle();
-                    }
-
-                    final int innerDepth = parser.getDepth();
-                    while (true) {
-                        final int type2 = parser.next();
-                        if (type2 == XmlPullParser.END_DOCUMENT) {
-                            break;
-                        }
-                        if (type2 == XmlPullParser.END_TAG && parser.getDepth() <= innerDepth) {
-                            break;
-                        }
-                        if (type2 == XmlPullParser.END_TAG || type2 == XmlPullParser.TEXT) {
-                            continue;
-                        }
-
-                        final String innerNodeName = parser.getName();
-                        switch (innerNodeName) {
-                            case "extra":
-                                mActivity.getResources().parseBundleExtra("extra", attrs, curBundle);
-                                skipCurrentTag(parser);
-                                break;
-                            case "intent":
-                                header.intent = Intent.parseIntent(mActivity.getResources(), parser, attrs);
-                                break;
-                            default:
-                                skipCurrentTag(parser);
-                                break;
-                        }
-                    }
-
-                    if (curBundle.size() > 0) {
-                        header.fragmentArguments = curBundle;
-                        curBundle = null;
-                    }
-
-                    target.add(header);
-                } else {
-                    skipCurrentTag(parser);
-                }
-            }
-
-        } catch (final XmlPullParserException e) {
-            throw new RuntimeException("Error parsing headers", e);
-        } catch (final IOException e) {
-            throw new RuntimeException("Error parsing headers", e);
-        } finally {
-            if (parser != null) parser.close();
-        }
+            @XmlRes final int resId,
+            @NonNull final List<Header> target) {
+        HeaderLoader.loadFromResource(mActivity, resId, target);
     }
 
     public void setListFooter(final View view) {
@@ -376,31 +254,6 @@ public class PreferenceActivityCompatDelegate {
         mListFooter.addView(view, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT));
-    }
-
-    public void onDestroy() {
-        mHandler.removeCallbacks(mBuildHeaders);
-        mHandler.removeCallbacks(mRequestFocus);
-    }
-
-    public void onSaveInstanceState(final Bundle outState) {
-        if (mHeaders.size() > 0) {
-            outState.putParcelableArrayList(HEADERS_TAG, mHeaders);
-            if (mCurHeader != null) {
-                final int index = mHeaders.indexOf(mCurHeader);
-                if (index >= 0) {
-                    outState.putInt(CUR_HEADER_TAG, index);
-                }
-            }
-        }
-    }
-
-    public void onRestoreInstanceState(final Bundle state) {
-        if (!mSinglePane) {
-            if (mCurHeader != null) {
-                setSelectedHeader(mCurHeader);
-            }
-        }
     }
 
     private void onListItemClick(
@@ -414,7 +267,7 @@ public class PreferenceActivityCompatDelegate {
 
         if (mAdapter != null) {
             final Object item = mAdapter.getItem(position);
-            if (item instanceof Header) onHeaderClick((Header) item, position);
+            if (item instanceof Header) onHeaderClick((Header) item);
         }
     }
 
@@ -422,9 +275,7 @@ public class PreferenceActivityCompatDelegate {
         return mActivity.getLifecycle().getCurrentState() == State.RESUMED;
     }
 
-    private void onHeaderClick(
-            final Header header,
-            final int position) {
+    private void onHeaderClick(final Header header) {
         if (header.fragment != null) {
             switchToHeader(header);
         } else if (header.intent != null) {
@@ -432,39 +283,15 @@ public class PreferenceActivityCompatDelegate {
         }
     }
 
-    private void showBreadCrumbs(
-            final CharSequence title,
-            final CharSequence shortTitle) {
-        if (mBreadCrumbTitle == null) {
-            mActivity.setTitle(title);
-            return;
-        }
-        if (mBreadCrumbTitle.getVisibility() != View.VISIBLE) {
-            mActivity.setTitle(title);
+    public void switchToHeader(final Header header) {
+        if (mCurHeader == header) {
+            mActivity.getSupportFragmentManager().popBackStack(BACK_STACK_PREFS, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         } else {
-            mBreadCrumbTitle.setText(title);
-        }
-    }
-
-    private void setSelectedHeader(final Header header) {
-        mCurHeader = header;
-        final int index = mHeaders.indexOf(header);
-        if (index >= 0) {
-            getListView().setItemChecked(index, true);
-        } else {
-            getListView().clearChoices();
-        }
-        showBreadCrumbs(header);
-    }
-
-    private void showBreadCrumbs(final Header header) {
-        if (header != null) {
-            CharSequence title = header.getBreadCrumbTitle(mActivity.getResources());
-            if (title == null) title = header.getTitle(mActivity.getResources());
-            if (title == null) title = mActivity.getTitle();
-            showBreadCrumbs(title, header.getBreadCrumbShortTitle(mActivity.getResources()));
-        } else {
-            showBreadCrumbs(mActivity.getTitle(), null);
+            if (header.fragment == null) {
+                throw new IllegalStateException("can't switch to header that has no fragment");
+            }
+            setSelectedHeader(header);
+            mHandler.post(() -> switchToHeaderInner(header.fragment, header.fragmentArguments));
         }
     }
 
@@ -492,29 +319,37 @@ public class PreferenceActivityCompatDelegate {
         }
     }
 
-    private void switchToHeader(
-            final String fragmentName,
-            final Bundle args) {
-        Header selectedHeader = null;
-        for (int i = 0; i < mHeaders.size(); i++) {
-            if (fragmentName.equals(mHeaders.get(i).fragment)) {
-                selectedHeader = mHeaders.get(i);
-                break;
-            }
+    private void setSelectedHeader(final Header header) {
+        mCurHeader = header;
+        final int index = mHeaders.indexOf(header);
+        if (index >= 0) {
+            getListView().setItemChecked(index, true);
+        } else {
+            getListView().clearChoices();
         }
-        setSelectedHeader(selectedHeader);
-        mHandler.post(() -> switchToHeaderInner(fragmentName, args));
+        showBreadCrumbs(header);
     }
 
-    public void switchToHeader(final Header header) {
-        if (mCurHeader == header) {
-            mActivity.getSupportFragmentManager().popBackStack(BACK_STACK_PREFS, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    private void showBreadCrumbs(final Header header) {
+        if (header != null) {
+            CharSequence title = header.getBreadCrumbTitle(mActivity.getResources());
+            if (title == null) title = header.getTitle(mActivity.getResources());
+            if (title == null) title = mActivity.getTitle();
+            showBreadCrumbs(title);
         } else {
-            if (header.fragment == null) {
-                throw new IllegalStateException("can't switch to header that has no fragment");
-            }
-            setSelectedHeader(header);
-            mHandler.post(() -> switchToHeaderInner(header.fragment, header.fragmentArguments));
+            showBreadCrumbs(mActivity.getTitle());
+        }
+    }
+
+    private void showBreadCrumbs(final CharSequence title) {
+        if (mBreadCrumbTitle == null) {
+            mActivity.setTitle(title);
+            return;
+        }
+        if (mBreadCrumbTitle.getVisibility() != View.VISIBLE) {
+            mActivity.setTitle(title);
+        } else {
+            mBreadCrumbTitle.setText(title);
         }
     }
 
@@ -563,18 +398,5 @@ public class PreferenceActivityCompatDelegate {
             }
         }
         return null;
-    }
-
-    private static void skipCurrentTag(final XmlPullParser parser) throws XmlPullParserException, IOException {
-        final int outerDepth = parser.getDepth();
-        while (true) {
-            final int type = parser.next();
-            if (type == XmlPullParser.END_DOCUMENT) {
-                break;
-            }
-            if (type == XmlPullParser.END_TAG && parser.getDepth() <= outerDepth) {
-                break;
-            }
-        }
     }
 }
