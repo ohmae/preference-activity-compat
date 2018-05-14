@@ -290,8 +290,10 @@ public class PreferenceActivityCompatDelegate {
             if (header.fragment == null) {
                 throw new IllegalStateException("can't switch to header that has no fragment");
             }
-            setSelectedHeader(header);
-            mHandler.post(() -> switchToHeaderInner(header.fragment, header.fragmentArguments));
+            mHandler.post(() -> {
+                switchToHeaderInner(header.fragment, header.fragmentArguments);
+                setSelectedHeader(header);
+            });
         }
     }
 
@@ -304,14 +306,11 @@ public class PreferenceActivityCompatDelegate {
             throw new IllegalArgumentException("Invalid fragment for this activity: " + fragmentName);
         }
 
-        final Fragment f = Fragment.instantiate(mActivity, fragmentName, args);
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setTransition(mSinglePane
-                ? FragmentTransaction.TRANSIT_NONE
-                : FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        transaction.replace(R.id.prefs, f);
-        transaction.commitAllowingStateLoss();
-        mFragment = f;
+        mFragment = Fragment.instantiate(mActivity, fragmentName, args);
+        fragmentManager.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_NONE)
+                .replace(R.id.prefs, mFragment)
+                .commitAllowingStateLoss();
 
         if (mSinglePane && mPrefsContainer.getVisibility() == View.GONE) {
             mPrefsContainer.setVisibility(View.VISIBLE);
@@ -360,7 +359,6 @@ public class PreferenceActivityCompatDelegate {
         for (int j = 0; j < from.size(); j++) {
             final Header oh = from.get(j);
             if (cur == oh || (cur.id != HEADER_ID_UNDEFINED && cur.id == oh.id)) {
-                // Must be this one.
                 matches.clear();
                 matches.add(oh);
                 break;
