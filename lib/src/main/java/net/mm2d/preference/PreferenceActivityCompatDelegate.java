@@ -133,7 +133,7 @@ public class PreferenceActivityCompatDelegate {
     }
 
     public void onCreate(@Nullable final Bundle savedInstanceState) {
-        mActivity.setContentView(R.layout.content_dual);
+        mActivity.setContentView(R.layout.content);
         mList = mActivity.findViewById(R.id.list);
         mList.setOnItemClickListener(mOnClickListener);
         if (mFinishedStart) {
@@ -178,23 +178,14 @@ public class PreferenceActivityCompatDelegate {
                 getListView().setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
             }
         }
-        if (mHeaders.size() == 0) {
-            mActivity.setContentView(R.layout.content_single);
-            mListFooter = mActivity.findViewById(R.id.list_footer);
-            mPrefsContainer = mActivity.findViewById(R.id.prefs);
-            mHeadersContainer = null;
-        } else if (mSinglePane) {
+        if (mSinglePane) {
             if (mCurHeader != null) {
                 mHeadersContainer.setVisibility(View.GONE);
             } else {
                 mPrefsContainer.setVisibility(View.GONE);
             }
-            //final ViewGroup container = mActivity.findViewById(R.id.prefs_container);
-            //container.setLayoutTransition(new LayoutTransition());
-        } else {
-            if (mHeaders.size() > 0 && mCurHeader != null) {
-                setSelectedHeader(mCurHeader);
-            }
+        } else if (mHeaders.size() > 0 && mCurHeader != null) {
+            setSelectedHeader(mCurHeader);
         }
     }
 
