@@ -139,7 +139,7 @@ public class PreferenceActivityCompatDelegate {
             }
         }
         if (mHeaders.size() > 0) {
-            setListAdapter(new HeaderAdapter(mActivity, mHeaders, R.layout.header_item));
+            setListAdapter(new HeaderAdapter(mActivity, mHeaders));
             if (!mSinglePane) {
                 getListView().setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
             }

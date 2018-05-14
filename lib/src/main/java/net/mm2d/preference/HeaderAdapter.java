@@ -7,9 +7,16 @@
 
 package net.mm2d.preference;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.TintTypedArray;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -30,16 +38,21 @@ class HeaderAdapter extends ArrayAdapter<Header> {
         TextView summary;
     }
 
+    private final int mColorAccent;
+    @NonNull
     private final LayoutInflater mInflater;
-    private final int mLayoutResId;
 
     HeaderAdapter(
-            final Context context,
-            final List<Header> objects,
-            final int layoutResId) {
+            @NonNull final Context context,
+            @NonNull final List<Header> objects) {
         super(context, 0, objects);
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mLayoutResId = layoutResId;
+        final Object service = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) Objects.requireNonNull(service);
+        if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+            mColorAccent = getThemeAttrColor(context, R.attr.colorAccent);
+        } else {
+            mColorAccent = 0;
+        }
     }
 
     @NonNull
@@ -52,7 +65,8 @@ class HeaderAdapter extends ArrayAdapter<Header> {
         final View view;
 
         if (convertView == null) {
-            view = mInflater.inflate(mLayoutResId, parent, false);
+            view = mInflater.inflate(R.layout.header_item, parent, false);
+            setBackground(view);
             holder = new HeaderViewHolder();
             holder.icon = view.findViewById(R.id.icon);
             holder.title = view.findViewById(R.id.title);
@@ -79,7 +93,32 @@ class HeaderAdapter extends ArrayAdapter<Header> {
         } else {
             holder.summary.setVisibility(View.GONE);
         }
-
         return view;
+    }
+
+    @SuppressLint("RestrictedApi")
+    private static int getThemeAttrColor(
+            @NonNull final Context context,
+            final int attr) {
+        final TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, null, new int[]{attr});
+        try {
+            return a.getColor(0, 0);
+        } finally {
+            a.recycle();
+        }
+    }
+
+    private void setBackground(@NonNull final View view) {
+        if (mColorAccent == 0) {
+            return;
+        }
+        final StateListDrawable drawable = new StateListDrawable();
+        drawable.addState(new int[]{android.R.attr.state_activated}, new ColorDrawable(mColorAccent));
+        drawable.addState(new int[]{-android.R.attr.state_activated}, new ColorDrawable(Color.TRANSPARENT));
+        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+            view.setBackground(drawable);
+        } else {
+            view.setBackgroundDrawable(drawable);
+        }
     }
 }
