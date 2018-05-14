@@ -8,11 +8,11 @@
 package net.mm2d.preference;
 
 import android.annotation.SuppressLint;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.XmlRes;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
 
 import java.util.List;
@@ -60,15 +60,6 @@ public class PreferenceActivityCompat extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onIsMultiPane() {
         return getResources().getBoolean(R.bool.dual_pane);
     }
@@ -79,7 +70,7 @@ public class PreferenceActivityCompat extends AppCompatActivity
 
     @Override
     public boolean isValidFragment(final String fragmentName) {
-        if (getApplicationInfo().targetSdkVersion >= android.os.Build.VERSION_CODES.KITKAT) {
+        if (getApplicationInfo().targetSdkVersion >= VERSION_CODES.KITKAT) {
             throw new RuntimeException(
                     "Subclasses of PreferenceActivity must override isValidFragment(String)"
                             + " to verify that the Fragment class is valid! "
