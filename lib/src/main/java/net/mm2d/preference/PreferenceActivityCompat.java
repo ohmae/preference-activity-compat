@@ -102,7 +102,7 @@ public class PreferenceActivityCompat extends AppCompatActivity
     }
 
     public void loadHeadersFromResource(
-            @XmlRes int resId,
+            @XmlRes final int resId,
             final List<Header> target) {
         mDelegate.loadHeadersFromResource(resId, target);
     }

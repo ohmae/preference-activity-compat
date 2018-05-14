@@ -33,7 +33,7 @@ class HeaderAdapter extends ArrayAdapter<Header> {
     private final LayoutInflater mInflater;
     private final int mLayoutResId;
 
-    public HeaderAdapter(
+    HeaderAdapter(
             final Context context,
             final List<Header> objects,
             final int layoutResId) {
@@ -64,6 +64,7 @@ class HeaderAdapter extends ArrayAdapter<Header> {
         }
 
         final Header header = getItem(position);
+        assert header != null;
         if (header.iconRes == 0) {
             holder.icon.setVisibility(View.GONE);
         } else {

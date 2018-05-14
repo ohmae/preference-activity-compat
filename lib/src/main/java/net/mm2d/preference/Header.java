@@ -87,7 +87,7 @@ public final class Header implements Parcelable {
         dest.writeBundle(extras);
     }
 
-    public void readFromParcel(final Parcel in) {
+    private void readFromParcel(final Parcel in) {
         id = in.readLong();
         titleRes = in.readInt();
         title = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
@@ -104,7 +104,7 @@ public final class Header implements Parcelable {
         extras = in.readBundle(getClass().getClassLoader());
     }
 
-    Header(final Parcel in) {
+    private Header(final Parcel in) {
         readFromParcel(in);
     }
 
