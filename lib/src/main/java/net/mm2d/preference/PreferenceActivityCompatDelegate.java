@@ -46,8 +46,12 @@ import java.util.List;
 public class PreferenceActivityCompatDelegate {
     public interface Connector {
         void onBuildHeaders(List<Header> target);
+
+        boolean onIsMultiPane();
+
         boolean isValidFragment(String fragmentName);
     }
+
     @NonNull
     private final FragmentActivity mActivity;
     @NonNull
@@ -62,11 +66,6 @@ public class PreferenceActivityCompatDelegate {
 
     private static final String HEADERS_TAG = ":android:headers";
     private static final String CUR_HEADER_TAG = ":android:cur_header";
-    public static final String EXTRA_SHOW_FRAGMENT = ":android:show_fragment";
-    public static final String EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":android:show_fragment_args";
-    public static final String EXTRA_SHOW_FRAGMENT_TITLE = ":android:show_fragment_title";
-    public static final String EXTRA_SHOW_FRAGMENT_SHORT_TITLE = ":android:show_fragment_short_title";
-    public static final String EXTRA_NO_HEADERS = ":android:no_headers";
     private static final String BACK_STACK_PREFS = ":android:prefs";
 
     private ListAdapter mAdapter;
@@ -94,19 +93,12 @@ public class PreferenceActivityCompatDelegate {
     private final Runnable mBuildHeaders = new Runnable() {
         @Override
         public void run() {
-            final ArrayList<Header> oldHeaders = new ArrayList<>(mHeaders);
             mHeaders.clear();
             mConnector.onBuildHeaders(mHeaders);
             if (mAdapter instanceof BaseAdapter) {
                 ((BaseAdapter) mAdapter).notifyDataSetChanged();
             }
-            final Header header = onGetNewHeader();
-            if (header != null && header.fragment != null) {
-                final Header mappedHeader = findBestMatchingHeader(header, oldHeaders);
-                if (mappedHeader == null || mCurHeader != mappedHeader) {
-                    switchToHeader(header);
-                }
-            } else if (mCurHeader != null) {
+            if (mCurHeader != null) {
                 final Header mappedHeader = findBestMatchingHeader(mCurHeader, mHeaders);
                 if (mappedHeader != null) {
                     setSelectedHeader(mappedHeader);
@@ -119,12 +111,12 @@ public class PreferenceActivityCompatDelegate {
 
     public static final long HEADER_ID_UNDEFINED = -1;
 
-    public void setListAdapter(final ListAdapter adapter) {
+    private void setListAdapter(final ListAdapter adapter) {
         mAdapter = adapter;
         mList.setAdapter(adapter);
     }
 
-    public void setSelection(final int position) {
+    private void setSelection(final int position) {
         mList.setSelection(position);
     }
 
@@ -132,15 +124,15 @@ public class PreferenceActivityCompatDelegate {
         return mList.getSelectedItemPosition();
     }
 
-    public ListView getListView() {
+    private ListView getListView() {
         return mList;
     }
 
-    public ListAdapter getListAdapter() {
+    private ListAdapter getListAdapter() {
         return mAdapter;
     }
 
-    protected void onCreate(@Nullable final Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         mActivity.setContentView(R.layout.content_dual);
         mList = mActivity.findViewById(R.id.list);
         mList.setOnItemClickListener(mOnClickListener);
@@ -152,19 +144,13 @@ public class PreferenceActivityCompatDelegate {
         mListFooter = mActivity.findViewById(R.id.list_footer);
         mPrefsContainer = mActivity.findViewById(R.id.prefs_frame);
         mHeadersContainer = mActivity.findViewById(R.id.headers);
-        final boolean hidingHeaders = onIsHidingHeaders();
-        mSinglePane = hidingHeaders || !onIsMultiPane();
+        mSinglePane = !mConnector.onIsMultiPane();
         final View breadCrumbSection = mActivity.findViewById(R.id.breadcrumb_section);
         mBreadCrumbTitle = mActivity.findViewById(R.id.bread_crumb_title);
         if (mSinglePane && breadCrumbSection != null && mBreadCrumbTitle != null) {
             mBreadCrumbTitle.setVisibility(View.GONE);
             breadCrumbSection.setVisibility(View.GONE);
         }
-        final Intent intent = mActivity.getIntent();
-        final String initialFragment = intent.getStringExtra(EXTRA_SHOW_FRAGMENT);
-        final Bundle initialArguments = intent.getBundleExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS);
-        final int initialTitle =intent.getIntExtra(EXTRA_SHOW_FRAGMENT_TITLE, 0);
-        final int initialShortTitle = intent.getIntExtra(EXTRA_SHOW_FRAGMENT_SHORT_TITLE, 0);
         mActivityTitle = mActivity.getTitle();
         if (savedInstanceState != null) {
             final ArrayList<Header> headers = savedInstanceState.getParcelableArrayList(HEADERS_TAG);
@@ -174,19 +160,15 @@ public class PreferenceActivityCompatDelegate {
                         (int) HEADER_ID_UNDEFINED);
                 if (curHeader >= 0 && curHeader < mHeaders.size()) {
                     setSelectedHeader(mHeaders.get(curHeader));
-                } else if (!mSinglePane && initialFragment == null) {
+                } else if (!mSinglePane) {
                     switchToHeader(onGetInitialHeader());
                 }
             } else {
                 showBreadCrumbs(mActivityTitle, null);
             }
         } else {
-            if (!onIsHidingHeaders()) {
-                mConnector.onBuildHeaders(mHeaders);
-            }
-            if (initialFragment != null) {
-                switchToHeader(initialFragment, initialArguments);
-            } else if (!mSinglePane && mHeaders.size() > 0) {
+            mConnector.onBuildHeaders(mHeaders);
+            if (!mSinglePane && mHeaders.size() > 0) {
                 switchToHeader(onGetInitialHeader());
             }
         }
@@ -196,19 +178,13 @@ public class PreferenceActivityCompatDelegate {
                 getListView().setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
             }
         }
-        if (mSinglePane && initialFragment != null && initialTitle != 0) {
-            final CharSequence initialTitleStr = mActivity.getText(initialTitle);
-            final CharSequence initialShortTitleStr = initialShortTitle != 0
-                    ? mActivity.getText(initialShortTitle) : null;
-            showBreadCrumbs(initialTitleStr, initialShortTitleStr);
-        }
-        if (mHeaders.size() == 0 && initialFragment == null) {
+        if (mHeaders.size() == 0) {
             mActivity.setContentView(R.layout.content_single);
             mListFooter = mActivity.findViewById(R.id.list_footer);
             mPrefsContainer = mActivity.findViewById(R.id.prefs);
             mHeadersContainer = null;
         } else if (mSinglePane) {
-            if (initialFragment != null || mCurHeader != null) {
+            if (mCurHeader != null) {
                 mHeadersContainer.setVisibility(View.GONE);
             } else {
                 mPrefsContainer.setVisibility(View.GONE);
@@ -225,8 +201,7 @@ public class PreferenceActivityCompatDelegate {
     public boolean onBackPressed() {
         if (mCurHeader != null
                 && mSinglePane
-                && mActivity.getSupportFragmentManager().getBackStackEntryCount() == 0
-                && mActivity.getIntent().getStringExtra(EXTRA_SHOW_FRAGMENT) == null) {
+                && mActivity.getSupportFragmentManager().getBackStackEntryCount() == 0) {
             if (mFragment != null) {
                 mActivity.getSupportFragmentManager()
                         .beginTransaction()
@@ -258,15 +233,7 @@ public class PreferenceActivityCompatDelegate {
         return !mSinglePane;
     }
 
-    public boolean onIsMultiPane() {
-        return mActivity.getResources().getBoolean(R.bool.dual_pane);
-    }
-
-    public boolean onIsHidingHeaders() {
-        return mActivity.getIntent().getBooleanExtra(EXTRA_NO_HEADERS, false);
-    }
-
-    public Header onGetInitialHeader() {
+    private Header onGetInitialHeader() {
         for (int i = 0; i < mHeaders.size(); i++) {
             final Header h = mHeaders.get(i);
             if (h.fragment != null) {
@@ -274,10 +241,6 @@ public class PreferenceActivityCompatDelegate {
             }
         }
         throw new IllegalStateException("Must have at least one header with a fragment");
-    }
-
-    public Header onGetNewHeader() {
-        return null;
     }
 
     public void invalidateHeaders() {
@@ -468,7 +431,7 @@ public class PreferenceActivityCompatDelegate {
         return mActivity.getLifecycle().getCurrentState() == State.RESUMED;
     }
 
-    public void onHeaderClick(
+    private void onHeaderClick(
             final Header header,
             final int position) {
         if (header.fragment != null) {
@@ -478,7 +441,7 @@ public class PreferenceActivityCompatDelegate {
         }
     }
 
-    public void showBreadCrumbs(
+    private void showBreadCrumbs(
             final CharSequence title,
             final CharSequence shortTitle) {
         if (mBreadCrumbTitle == null) {
@@ -538,7 +501,7 @@ public class PreferenceActivityCompatDelegate {
         }
     }
 
-    public void switchToHeader(
+    private void switchToHeader(
             final String fragmentName,
             final Bundle args) {
         Header selectedHeader = null;
