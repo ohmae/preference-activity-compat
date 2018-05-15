@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.preference.Preference;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -41,6 +42,7 @@ public class PreferenceActivityCompatDelegate {
 
         boolean isValidFragment(String fragmentName);
     }
+
     public static final long HEADER_ID_UNDEFINED = -1;
 
     private static final String HEADERS_TAG = ":android:headers";
@@ -350,6 +352,16 @@ public class PreferenceActivityCompatDelegate {
         } else {
             mBreadCrumbTitle.setText(title);
         }
+    }
+
+    public void startPreferenceFragment(@NonNull final Preference pref) {
+        final Fragment fragment = Fragment.instantiate(mActivity, pref.getFragment(), pref.getExtras());
+        mActivity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.prefs, fragment)
+                .setBreadCrumbTitle(pref.getTitle())
+                .setTransition(FragmentTransaction.TRANSIT_NONE)
+                .addToBackStack(BACK_STACK_PREFS)
+                .commitAllowingStateLoss();
     }
 
     private Header findBestMatchingHeader(

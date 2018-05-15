@@ -10,9 +10,12 @@ package net.mm2d.preference;
 import android.annotation.SuppressLint;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.XmlRes;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.View;
 
 import java.util.List;
@@ -21,8 +24,9 @@ import java.util.List;
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 @SuppressLint("Registered")
-public class PreferenceActivityCompat extends AppCompatActivity
-        implements PreferenceActivityCompatDelegate.Connector {
+public class PreferenceActivityCompat extends AppCompatActivity implements
+        PreferenceActivityCompatDelegate.Connector,
+        PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     private PreferenceActivityCompatDelegate mDelegate;
 
     @SuppressLint("RestrictedApi")
@@ -113,5 +117,13 @@ public class PreferenceActivityCompat extends AppCompatActivity
 
     public void switchToHeader(final Header header) {
         mDelegate.switchToHeader(header);
+    }
+
+    @Override
+    public boolean onPreferenceStartFragment(
+            @NonNull final PreferenceFragmentCompat caller,
+            @NonNull final Preference pref) {
+        mDelegate.startPreferenceFragment(pref);
+        return true;
     }
 }
