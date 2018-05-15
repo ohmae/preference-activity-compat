@@ -4,7 +4,6 @@
         android:defaultValue="true"
         android:key="notifications_new_message"
         android:title="@string/pref_title_new_message_notifications"
-        android:widgetLayout="@layout/switch_widget"
         />
 
     <SwitchPreference
@@ -12,7 +11,6 @@
         android:dependency="notifications_new_message"
         android:key="notifications_new_message_vibrate"
         android:title="@string/pref_title_vibrate"
-        android:widgetLayout="@layout/switch_widget"
         />
 
 </PreferenceScreen>

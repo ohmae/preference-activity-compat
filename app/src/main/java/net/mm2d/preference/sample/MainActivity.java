@@ -19,6 +19,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button1).setOnClickListener(v ->
                 startActivity(new Intent(this, SettingsActivity.class)));
         findViewById(R.id.button2).setOnClickListener(v ->
-                startActivity(new Intent(this, SettingsActivity2.class)));
+                startActivity(new Intent(this, NativeSettingsActivity.class)));
     }
 }

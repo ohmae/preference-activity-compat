@@ -20,7 +20,7 @@
             android:name=".SettingsActivity">
         </activity>
         <activity
-            android:name=".SettingsActivity2">
+            android:name=".NativeSettingsActivity">
         </activity>
     </application>
 

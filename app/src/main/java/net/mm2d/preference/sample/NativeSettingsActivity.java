@@ -20,7 +20,7 @@ import android.view.MenuItem;
 
 import java.util.List;
 
-public class SettingsActivity2 extends AppCompatPreferenceActivity {
+public class NativeSettingsActivity extends AppCompatPreferenceActivity {
     private static final OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {
         String stringValue = value.toString();
         if (preference instanceof ListPreference) {
@@ -83,7 +83,7 @@ public class SettingsActivity2 extends AppCompatPreferenceActivity {
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(final List<Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers2, target);
+        loadHeadersFromResource(R.xml.native_pref_headers, target);
     }
 
     protected boolean isValidFragment(final String fragmentName) {
@@ -106,7 +106,7 @@ public class SettingsActivity2 extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general);
+            addPreferencesFromResource(R.xml.native_pref_general);
             setHasOptionsMenu(true);
             bindPreferenceSummaryToValue(findPreference("example_text"));
             bindPreferenceSummaryToValue(findPreference("example_list"));
@@ -117,7 +117,7 @@ public class SettingsActivity2 extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_notification);
+            addPreferencesFromResource(R.xml.native_pref_notification);
             setHasOptionsMenu(true);
         }
     }
@@ -126,7 +126,7 @@ public class SettingsActivity2 extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_data_sync);
+            addPreferencesFromResource(R.xml.native_pref_data_sync);
             setHasOptionsMenu(true);
             bindPreferenceSummaryToValue(findPreference("sync_frequency"));
         }
