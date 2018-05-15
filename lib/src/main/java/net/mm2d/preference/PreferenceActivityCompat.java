@@ -44,13 +44,13 @@ public class PreferenceActivityCompat extends AppCompatActivity implements
     }
 
     @Override
-    protected void onSaveInstanceState(final Bundle outState) {
+    protected void onSaveInstanceState(@NonNull final Bundle outState) {
         super.onSaveInstanceState(outState);
         mDelegate.onSaveInstanceState(outState);
     }
 
     @Override
-    protected void onRestoreInstanceState(final Bundle state) {
+    protected void onRestoreInstanceState(@NonNull final Bundle state) {
         super.onRestoreInstanceState(state);
         mDelegate.onRestoreInstanceState(state);
     }
@@ -69,11 +69,11 @@ public class PreferenceActivityCompat extends AppCompatActivity implements
     }
 
     @Override
-    public void onBuildHeaders(final List<Header> target) {
+    public void onBuildHeaders(@NonNull final List<Header> target) {
     }
 
     @Override
-    public boolean isValidFragment(final String fragmentName) {
+    public boolean isValidFragment(@Nullable final String fragmentName) {
         if (getApplicationInfo().targetSdkVersion >= VERSION_CODES.KITKAT) {
             throw new RuntimeException(
                     "Subclasses of PreferenceActivity must override isValidFragment(String)"
@@ -93,6 +93,7 @@ public class PreferenceActivityCompat extends AppCompatActivity implements
         return mDelegate.hasHeaders();
     }
 
+    @NonNull
     public List<Header> getHeaders() {
         return mDelegate.getHeaders();
     }
@@ -107,15 +108,15 @@ public class PreferenceActivityCompat extends AppCompatActivity implements
 
     public void loadHeadersFromResource(
             @XmlRes final int resId,
-            final List<Header> target) {
+            @NonNull final List<Header> target) {
         mDelegate.loadHeadersFromResource(resId, target);
     }
 
-    public void setListFooter(final View view) {
+    public void setListFooter(@NonNull final View view) {
         mDelegate.setListFooter(view);
     }
 
-    public void switchToHeader(final Header header) {
+    public void switchToHeader(@NonNull final Header header) {
         mDelegate.switchToHeader(header);
     }
 

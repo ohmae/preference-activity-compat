@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
@@ -66,8 +67,7 @@ public class SettingsActivity extends PreferenceActivityCompat {
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(final List<Header> target) {
+    public void onBuildHeaders(@NonNull final List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
