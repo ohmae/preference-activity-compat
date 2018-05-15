@@ -104,6 +104,16 @@ public class PreferenceActivityCompatDelegate {
         mConnector = connector;
     }
 
+    @NonNull
+    private Context getContext() {
+        return mActivity;
+    }
+
+    @NonNull
+    private Resources getResources() {
+        return mActivity.getResources();
+    }
+
     private boolean isResumed() {
         return mActivity.getLifecycle().getCurrentState() == State.RESUMED;
     }
@@ -129,16 +139,6 @@ public class PreferenceActivityCompatDelegate {
     @Nullable
     private <T extends View> T findViewById(@IdRes final int id) {
         return mActivity.findViewById(id);
-    }
-
-    @NonNull
-    private Resources getResources() {
-        return mActivity.getResources();
-    }
-
-    @NonNull
-    private Context getContext() {
-        return mActivity;
     }
 
     public void onCreate(@Nullable final Bundle savedInstanceState) {
