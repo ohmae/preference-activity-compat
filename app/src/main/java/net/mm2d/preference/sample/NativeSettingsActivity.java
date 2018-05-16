@@ -1,21 +1,14 @@
 package net.mm2d.preference.sample;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 
 import java.util.List;
@@ -30,19 +23,6 @@ public class NativeSettingsActivity extends AppCompatPreferenceActivity {
                     index >= 0
                             ? listPreference.getEntries()[index]
                             : null);
-        } else if (preference instanceof RingtonePreference) {
-            if (TextUtils.isEmpty(stringValue)) {
-                preference.setSummary(R.string.pref_ringtone_silent);
-            } else {
-                Ringtone ringtone = RingtoneManager.getRingtone(
-                        preference.getContext(), Uri.parse(stringValue));
-                if (ringtone == null) {
-                    preference.setSummary(null);
-                } else {
-                    String name = ringtone.getTitle(preference.getContext());
-                    preference.setSummary(name);
-                }
-            }
         } else {
             preference.setSummary(stringValue);
         }
@@ -81,11 +61,11 @@ public class NativeSettingsActivity extends AppCompatPreferenceActivity {
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(final List<Header> target) {
         loadHeadersFromResource(R.xml.native_pref_headers, target);
     }
 
+    @Override
     protected boolean isValidFragment(final String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
