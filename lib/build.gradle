@@ -1,4 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+def versionMajor = 0
+def versionMinor = 0
+def versionPatch = 1
 
 android {
     compileSdkVersion 27
@@ -6,15 +11,13 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
-        vectorDrawables.useSupportLibrary = true
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -28,4 +31,33 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:preference-v7:27.1.1'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'file:build/maven')
+            pom.groupId = 'net.mm2d'
+            pom.artifactId = 'preferences'
+            pom.version = "${versionMajor}.${versionMinor}.${versionPatch}"
+            pom.project {
+                licenses {
+                    license {
+                        name 'The MIT License'
+                        url 'https://opensource.org/licenses/MIT'
+                        distribution 'repo'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives sourcesJar
 }
