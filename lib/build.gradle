@@ -38,7 +38,7 @@ uploadArchives {
         mavenDeployer {
             repository(url: 'file:build/maven')
             pom.groupId = 'net.mm2d'
-            pom.artifactId = 'preferences'
+            pom.artifactId = 'preference'
             pom.version = "${versionMajor}.${versionMinor}.${versionPatch}"
             pom.project {
                 licenses {
