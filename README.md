@@ -102,45 +102,31 @@ Please see the next section.
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <!-- ADDED! --><item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
++        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 ```
 
 2. Replace `SettingsActivity`'s super class
 ```java
-public class SettingsActivity extends AppCompatPreferenceActivity {
-```
-```java
-public class SettingsActivity extends PreferenceActivityCompat {
+- public class SettingsActivity extends AppCompatPreferenceActivity {
++ public class SettingsActivity extends PreferenceActivityCompat {
 ```
 At that time, change the `isValidFragment` from `protected` to `public`.
 ```java
     @Override
-     protected boolean isValidFragment(final String fragmentName) {
-```
-```java
-    @Override
-     public boolean isValidFragment(final String fragmentName) {
+-     protected boolean isValidFragment(final String fragmentName) {
++     public boolean isValidFragment(final String fragmentName) {
 ```
 
 3. Change the parent of Fragment corresponding to each `PreferenceScreen` from `PreferenceFragment` to `PreferenceFragmentCompat`.
-```java
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
-```
-```java
-    public static class GeneralPreferenceFragment extends PreferenceFragmentCompat {
-```
 And implement `onCreatePreferences` instead of `onCreate`
 ```java
+-     public static class GeneralPreferenceFragment extends PreferenceFragment {
++     public static class GeneralPreferenceFragment extends PreferenceFragmentCompat {
         @Override
-        public void onCreate(final Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.native_pref_general);
-        }
-```
-```java
-        @Override
-        public void onCreatePreferences(final Bundle savedInstanceState,final String rootKey) {
+-         public void onCreate(final Bundle savedInstanceState) {
+-             super.onCreate(savedInstanceState);
++         public void onCreatePreferences(final Bundle savedInstanceState,final String rootKey) {
             addPreferencesFromResource(R.xml.native_pref_general);
         }
 ```
@@ -153,59 +139,45 @@ Use `net.mm2d.preference.Header` instead of `android.preference.PreferenceActivi
 ```
 Use `android.support.v7.preference` instead of `android.preference`
 ```java
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-```
-```java
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.Preference.OnPreferenceChangeListener;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceManager;
+- import android.preference.ListPreference;
+- import android.preference.Preference;
+- import android.preference.Preference.OnPreferenceChangeListener;
+- import android.preference.PreferenceFragment;
+- import android.preference.PreferenceManager;
++ import android.support.v7.preference.ListPreference;
++ import android.support.v7.preference.Preference;
++ import android.support.v7.preference.Preference.OnPreferenceChangeListener;
++ import android.support.v7.preference.PreferenceFragmentCompat;
++ import android.support.v7.preference.PreferenceManager;
 ```
 
 5. Change namespace of attributes to `app` instead of `android` in xml of `preference-headers`.
 ```xml
-<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+<preference-headers
+=     xmlns:android="http://schemas.android.com/apk/res/android">
++     xmlns:app="http://schemas.android.com/apk/res-auto">
     <header
-        android:fragment="net.mm2d.preference.sample.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/pref_header_general"/>
- ```
- ```xml
- <preference-headers xmlns:app="http://schemas.android.com/apk/res-auto">
-    <header
-        app:fragment="net.mm2d.preference.sample.SettingsActivity$GeneralPreferenceFragment"
-        app:icon="@drawable/ic_info_black_24dp"
-        app:title="@string/pref_header_general"
+=         android:fragment="net.mm2d.preference.sample.SettingsActivity$GeneralPreferenceFragment"
+=         android:icon="@drawable/ic_info_black_24dp"
+=         android:title="@string/pref_header_general"
++         app:fragment="net.mm2d.preference.sample.SettingsActivity$GeneralPreferenceFragment"
++         app:icon="@drawable/ic_info_black_24dp"
++         app:title="@string/pref_header_general"
         />
- ```
+```
 
 6. Change tag to `SwitchPreferenceCompat` instead of `SwtichPreference` in xml of`PreferenceScreen`, if you need.
 ```xml
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <SwitchPreference
+-     <SwitchPreference
++     <!--suppress AndroidElementNotAllowed -->
++     <SwitchPreferenceCompat
         android:defaultValue="true"
         android:key="example_switch"
         android:summary="@string/pref_description_social_recommendations"
         android:title="@string/pref_title_social_recommendations"
         />
 ```
-```xml
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--suppress AndroidElementNotAllowed -->
-    <SwitchPreferenceCompat
-        android:defaultValue="true"
-        android:key="example_switch"
-        android:summary="@string/pref_description_social_recommendations"
-        android:title="@string/pref_title_social_recommendations"
-        />
-```
-
-
 
 ## Author
 大前 良介 (OHMAE Ryosuke)
