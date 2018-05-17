@@ -29,19 +29,21 @@ that inherits the native Fragment, but **the native Fragment is deprecated**.
 
 ## Screenshots
 
-### Phone Android 7.1
+### Android 4.4 (Tablet)
 
-#### PreferenceActivityCompat:smile:
+|PreferenceActivityCompat:smile:|Native PreferenceActivity:scream:|
+|-|-|
+|![](readme/4C4.png)|![](readme/4N4.png)|
+|![](readme/4C5.png)|![](readme/4N5.png)|
 
-|![](readme/7C1.png)|![](readme/7C2.png)|![](readme/7C3.png)|
-|-|-|-|
+### Android 7.1 (Tablet)
 
-#### Native PreferenceActivity:smile:
+|PreferenceActivityCompat:smile:|Native PreferenceActivity:smile:|
+|-|-|
+|![](readme/7C4.png)|![](readme/7N4.png)|
+|![](readme/7C5.png)|![](readme/7N5.png)|
 
-|![](readme/7N1.png)|![](readme/7N2.png)|![](readme/7N3.png)|
-|-|-|-|
-
-### Phone Android 4.4
+### Android 4.4 (Phone)
 
 #### PreferenceActivityCompat:smile:
 
@@ -53,20 +55,17 @@ that inherits the native Fragment, but **the native Fragment is deprecated**.
 |![](readme/4N1.png)|![](readme/4N2.png)|![](readme/4N3.png)|
 |-|-|-|
 
+### Android 7.1 (Phone)
 
-### Tablet Android 7.1
+#### PreferenceActivityCompat:smile:
 
-|PreferenceActivityCompat:smile:|Native PreferenceActivity:smile:|
-|-|-|
-|![](readme/7C4.png)|![](readme/7N4.png)|
-|![](readme/7C5.png)|![](readme/7N5.png)|
+|![](readme/7C1.png)|![](readme/7C2.png)|![](readme/7C3.png)|
+|-|-|-|
 
-### Tablet Android 4.4
+#### Native PreferenceActivity:smile:
 
-|PreferenceActivityCompat:smile:|Native PreferenceActivity:scream:|
-|-|-|
-|![](readme/4C4.png)|![](readme/4N4.png)|
-|![](readme/4C5.png)|![](readme/4N5.png)|
+|![](readme/7N1.png)|![](readme/7N2.png)|![](readme/7N3.png)|
+|-|-|-|
 
 ## Restriction
 
@@ -146,7 +145,13 @@ And implement `onCreatePreferences` instead of `onCreate`
         }
 ```
 
-4. Review package import. We need to use `android.support.v7.preference` instead of `android.preference`
+4. Change package import.
+Use `net.mm2d.preference.Header` instead of `android.preference.PreferenceActivity.Header`
+```java
+- import android.preference.PreferenceActivity.Header;
++ import net.mm2d.preference.Header;
+```
+Use `android.support.v7.preference` instead of `android.preference`
 ```java
 import android.preference.ListPreference;
 import android.preference.Preference;
