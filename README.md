@@ -67,9 +67,24 @@ that inherits the native Fragment, but **the native Fragment is deprecated**.
 |![](readme/7N1.png)|![](readme/7N2.png)|![](readme/7N3.png)|
 |-|-|-|
 
+## How to use
+
+```gradle
+repositories {
+    maven {
+        url 'https://ohmae.github.com/maven'
+    }
+}
+
+dependencies {
+    implementation 'net.mm2d:preference:0.0.2'
+}
+```
+
 ## Restriction
 
-This class is only partially compatible with `PreferenceActivity`.
+This class is only partially compatible with
+[`PreferenceActivity`](https://developer.android.com/reference/android/preference/PreferenceActivity).
 Only functions that are likely to be used are implemented.
 
 e.g.
@@ -87,7 +102,7 @@ This is because `RingtonePreference` doesn't exist in the
 Because
 [`android.support.v14.preference.SwitchPreference`](https://developer.android.com/reference/android/support/v14/preference/SwitchPreference)
 is inflated.
-If you want to apply material desing, use
+If you want to apply material design, use
 [`SwitchPreferenceCompat`](https://developer.android.com/reference/android/support/v7/preference/SwitchPreferenceCompat)
 instead.
 
@@ -95,14 +110,14 @@ Please see the next section.
 
 ## Migrate from AppCompatPreferenceActivity
 
-1. Add `preferenceTheme` in `PreferenceActivity`'s theme
+1. Add `preferenceTheme` in `PreferenceActivity`'s theme. (important!)
 ```xml
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
++        <item name="preferenceTheme">@style/PreferenceCompatTheme</item>
     </style>
 ```
 

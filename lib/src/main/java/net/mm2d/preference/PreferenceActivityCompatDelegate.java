@@ -132,7 +132,7 @@ public class PreferenceActivityCompatDelegate {
         mActivity.setTitle(title);
     }
 
-    public void setContentView(@LayoutRes final int layoutResID) {
+    private void setContentView(@LayoutRes final int layoutResID) {
         mActivity.setContentView(layoutResID);
     }
 
