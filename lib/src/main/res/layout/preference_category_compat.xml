@@ -12,6 +12,6 @@
     android:layout_marginTop="@dimen/category_margin_top"
     android:gravity="center_vertical"
     android:textColor="?attr/colorAccent"
-    android:textStyle="bold"
     android:textSize="14sp"
+    android:textStyle="bold"
     />

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     android:baselineAligned="false"
+    android:orientation="horizontal"
     >
 
     <LinearLayout
@@ -48,7 +48,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/vertical_divider" />
+    <include layout="@layout/vertical_divider"/>
 
     <LinearLayout
         android:id="@+id/prefs_frame"

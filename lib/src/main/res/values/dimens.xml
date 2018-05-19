@@ -6,8 +6,8 @@
     <dimen name="side_margin">0dp</dimen>
     <dimen name="side_margin_negative">0dp</dimen>
     <dimen name="header_vertical_padding">0dp</dimen>
-    <dimen name="breadcrumbs_margin_start">16dp</dimen>
-    <dimen name="breadcrumbs_margin_end">24dp</dimen>
+    <dimen name="breadcrumbs_margin_start">56dp</dimen>
+    <dimen name="breadcrumbs_margin_end">0dp</dimen>
 
     <dimen name="category_margin_bottom">2dp</dimen>
     <dimen name="category_margin_start">16dp</dimen>
