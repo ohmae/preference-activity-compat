@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="category_margin_bottom">2dp</dimen>
     <dimen name="category_margin_start">8dp</dimen>
-    <dimen name="category_margin_end">0dp</dimen>
-    <dimen name="category_margin_top">16dp</dimen>
 </resources>
