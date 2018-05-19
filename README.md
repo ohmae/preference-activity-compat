@@ -25,7 +25,9 @@ In the fact, it allows us to use some new APIs, but doesn't allows we to use mat
 
 Also, since `AppCompatPreferenceActivity` can inflate only native Fragment, it can not inflate `PreferenceFragmentCompat` inheriting Fragment of support library.
 There is also a Support Library version of [`PreferenceFragment`](https://developer.android.com/reference/android/support/v14/preference/PreferenceFragment)
-that inherits the native Fragment, but **the native Fragment is deprecated**.
+that inherits the native Fragment.
+
+But **the native Fragment is deprecated**.
 
 ## Screenshots
 
@@ -69,6 +71,7 @@ that inherits the native Fragment, but **the native Fragment is deprecated**.
 
 ## How to use
 
+Gradle
 ```gradle
 repositories {
     maven {
@@ -81,6 +84,11 @@ dependencies {
 }
 ```
 
+If you are using ProGuard, to load preference-header from xml, you might need to add the following option.
+```
+-keep public class * extends android.support.v7.preference.PreferenceFragmentCompat
+```
+
 ## Restriction
 
 This class is only partially compatible with
@@ -88,7 +96,9 @@ This class is only partially compatible with
 Only functions that are likely to be used are implemented.
 
 e.g.
-The method to handle Preference is deprecated in Activity and is not implemented.
+- The method to handle Preference is deprecated in Activity and is not implemented.
+- [`FragmentBreadCrumbs`](https://developer.android.com/reference/android/app/FragmentBreadCrumbs) is not used.
+
 This class can handle only `preference-headers`.
 
 This class was created with the premise of using
