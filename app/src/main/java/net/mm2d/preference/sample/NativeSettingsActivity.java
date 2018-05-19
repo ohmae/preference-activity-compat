@@ -31,7 +31,7 @@ public class NativeSettingsActivity extends AppCompatPreferenceActivity {
 
     private static boolean isXLargeTablet(final Context context) {
         return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     private static void bindPreferenceSummaryToValue(final Preference preference) {

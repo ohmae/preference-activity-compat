@@ -20,7 +20,9 @@
             android:name=".SettingsActivity">
         </activity>
         <activity
-            android:name=".NativeSettingsActivity">
+            android:name=".NativeSettingsActivity"
+            android:label="@string/app_compat_preference_activity"
+            >
         </activity>
     </application>
 

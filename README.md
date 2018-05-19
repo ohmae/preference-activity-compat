@@ -154,12 +154,12 @@ Use `android.support.v7.preference` instead of `android.preference`
 5. Change namespace of attributes to `app` instead of `android` in xml of `preference-headers`.
 ```xml
 <preference-headers
-=     xmlns:android="http://schemas.android.com/apk/res/android">
+-     xmlns:android="http://schemas.android.com/apk/res/android">
 +     xmlns:app="http://schemas.android.com/apk/res-auto">
     <header
-=         android:fragment="net.mm2d.preference.sample.SettingsActivity$GeneralPreferenceFragment"
-=         android:icon="@drawable/ic_info_black_24dp"
-=         android:title="@string/pref_header_general"
+-         android:fragment="net.mm2d.preference.sample.SettingsActivity$GeneralPreferenceFragment"
+-         android:icon="@drawable/ic_info_black_24dp"
+-         android:title="@string/pref_header_general"
 +         app:fragment="net.mm2d.preference.sample.SettingsActivity$GeneralPreferenceFragment"
 +         app:icon="@drawable/ic_info_black_24dp"
 +         app:title="@string/pref_header_general"
