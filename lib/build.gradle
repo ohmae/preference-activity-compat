@@ -1,9 +1,15 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
 
 def versionMajor = 0
 def versionMinor = 0
 def versionPatch = 2
+
+group 'net.mm2d'
+archivesBaseName = 'preference'
+version "${versionMajor}.${versionMinor}.${versionPatch}"
 
 android {
     compileSdkVersion 27
@@ -33,14 +39,64 @@ dependencies {
     implementation 'com.android.support:preference-v7:27.1.1'
 }
 
+def libraryId = 'preference'
+def siteUrl = 'https://github.com/ohmae/preference-activity-compat'
+def githubUrl = 'https://github.com/ohmae/preference-activity-compat'
+
+bintray {
+    user = project.hasProperty('bintray_user') ? bintray_user : ''
+    key = project.hasProperty('bintray_key') ? bintray_key : ''
+    configurations = ['archives']
+
+    pkg {
+        repo = 'maven'
+        name = project.group + '.' + libraryId
+        licenses = ['MIT']
+        websiteUrl = siteUrl
+        issueTrackerUrl = githubUrl + '/blob/master/LICENSE'
+        vcsUrl = githubUrl + '.git'
+        issueTrackerUrl = githubUrl + '/issues'
+        publicDownloadNumbers = true
+        version {
+            name = project.version
+        }
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name libraryId
+            url siteUrl
+
+            packaging 'aar'
+            groupId project.group
+            artifactId libraryId
+            version project.version
+
+            licenses {
+                license {
+                    name 'The MIT License'
+                    url 'https://opensource.org/licenses/MIT'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                connection githubUrl + '.git'
+                url githubUrl
+            }
+        }
+    }
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
             repository(url: 'file:build/maven')
-            pom.groupId = 'net.mm2d'
-            pom.artifactId = 'preference'
-            pom.version = "${versionMajor}.${versionMinor}.${versionPatch}"
             pom.project {
+                groupId = project.group
+                artifactId = libraryId
+                version = project.version
                 licenses {
                     license {
                         name 'The MIT License'
