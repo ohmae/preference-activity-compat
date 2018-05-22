@@ -3,7 +3,8 @@
 [![GitHub release](https://img.shields.io/github/release/ohmae/preference-activity-compat.svg)](https://github.com/ohmae/preference-activity-compat/releases)
 [![GitHub issues](https://img.shields.io/github/issues/ohmae/preference-activity-compat.svg)](https://github.com/ohmae/preference-activity-compat/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/ohmae/preference-activity-compat.svg)](https://github.com/ohmae/preference-activity-compat/issues?q=is%3Aissue+is%3Aclosed)
-
+[![Maven Repository](https://img.shields.io/badge/maven-jcenter-brightgreen.svg)](https://bintray.com/ohmae/maven/net.mm2d.preference)
+[![Maven metadata URI](https://img.shields.io/maven-metadata/v/https/jcenter.bintray.com/net/mm2d/preference/maven-metadata.xml.svg)](https://bintray.com/ohmae/maven/net.mm2d.preference)
 
 This is a compatibility library of `PreferenceActivity`.
 
@@ -71,7 +72,14 @@ But **the native Fragment is deprecated**.
 
 ## How to use
 
-Gradle
+You can download this library from jCenter.
+```gradle
+repositories {
+    jcenter()
+}
+```
+
+Add dependencies, as following.
 ```gradle
 dependencies {
     implementation 'net.mm2d:preference:0.0.2'
