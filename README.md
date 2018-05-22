@@ -73,12 +73,6 @@ But **the native Fragment is deprecated**.
 
 Gradle
 ```gradle
-repositories {
-    maven {
-        url 'https://ohmae.github.com/maven'
-    }
-}
-
 dependencies {
     implementation 'net.mm2d:preference:0.0.2'
 }
