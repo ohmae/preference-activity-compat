@@ -387,46 +387,41 @@ public class PreferenceActivityCompatDelegate {
 
     @Nullable
     private Header findBestMatchingHeader(
-            @NonNull final Header cur,
+            @NonNull final Header current,
             @NonNull final ArrayList<Header> from) {
         final ArrayList<Header> matches = new ArrayList<>();
-        for (int j = 0; j < from.size(); j++) {
-            final Header oh = from.get(j);
-            if (cur == oh || (cur.id != HEADER_ID_UNDEFINED && cur.id == oh.id)) {
+        for (final Header oh : from) {
+            if (current == oh || (current.id != HEADER_ID_UNDEFINED && current.id == oh.id)) {
                 matches.clear();
                 matches.add(oh);
                 break;
             }
-            if (cur.fragment != null) {
-                if (cur.fragment.equals(oh.fragment)) {
+            if (current.fragment != null) {
+                if (current.fragment.equals(oh.fragment)) {
                     matches.add(oh);
                 }
-            } else if (cur.intent != null) {
-                if (cur.intent.equals(oh.intent)) {
+            } else if (current.intent != null) {
+                if (current.intent.equals(oh.intent)) {
                     matches.add(oh);
                 }
-            } else if (cur.title != null) {
-                if (cur.title.equals(oh.title)) {
+            } else if (current.title != null) {
+                if (current.title.equals(oh.title)) {
                     matches.add(oh);
                 }
             }
         }
-        final int NM = matches.size();
-        if (NM == 1) {
+        if (matches.size() == 1) {
             return matches.get(0);
-        } else if (NM > 1) {
-            for (int j = 0; j < NM; j++) {
-                final Header oh = matches.get(j);
-                if (cur.fragmentArguments != null &&
-                        cur.fragmentArguments.equals(oh.fragmentArguments)) {
-                    return oh;
-                }
-                if (cur.extras != null && cur.extras.equals(oh.extras)) {
-                    return oh;
-                }
-                if (cur.title != null && cur.title.equals(oh.title)) {
-                    return oh;
-                }
+        }
+        for (final Header oh : matches) {
+            if (current.fragmentArguments != null && current.fragmentArguments.equals(oh.fragmentArguments)) {
+                return oh;
+            }
+            if (current.extras != null && current.extras.equals(oh.extras)) {
+                return oh;
+            }
+            if (current.title != null && current.title.equals(oh.title)) {
+                return oh;
             }
         }
         return null;

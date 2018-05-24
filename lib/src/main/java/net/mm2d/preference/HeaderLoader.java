@@ -13,6 +13,7 @@ import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.XmlRes;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -66,13 +67,10 @@ class HeaderLoader {
                     "XML document must start with <preference-headers> tag; found"
                             + nodeName + " at " + parser.getPositionDescription());
         }
-        final int outerDepth = parser.getDepth();
+        final int startDepth = parser.getDepth();
         while (true) {
             final int type = parser.next();
-            if (type == XmlPullParser.END_DOCUMENT) {
-                break;
-            }
-            if (type == XmlPullParser.END_TAG && parser.getDepth() <= outerDepth) {
+            if (reachToEnd(type, parser.getDepth(), startDepth)) {
                 break;
             }
             if (type == XmlPullParser.END_TAG || type == XmlPullParser.TEXT) {
@@ -96,35 +94,53 @@ class HeaderLoader {
         final Header header = new Header();
         final TypedArray sa = context.obtainStyledAttributes(attrs, R.styleable.PreferenceHeader);
         header.id = sa.getResourceId(R.styleable.PreferenceHeader_id, (int) PreferenceActivityCompatDelegate.HEADER_ID_UNDEFINED);
-        TypedValue tv = sa.peekValue(R.styleable.PreferenceHeader_title);
-        if (tv != null && tv.type == TypedValue.TYPE_STRING) {
-            if (tv.resourceId != 0) {
-                header.titleRes = tv.resourceId;
-            } else {
-                header.title = tv.string;
-            }
-        }
-        tv = sa.peekValue(R.styleable.PreferenceHeader_summary);
-        if (tv != null && tv.type == TypedValue.TYPE_STRING) {
-            if (tv.resourceId != 0) {
-                header.summaryRes = tv.resourceId;
-            } else {
-                header.summary = tv.string;
-            }
-        }
-        tv = sa.peekValue(R.styleable.PreferenceHeader_breadCrumbTitle);
-        if (tv != null && tv.type == TypedValue.TYPE_STRING) {
-            if (tv.resourceId != 0) {
-                header.breadCrumbTitleRes = tv.resourceId;
-            } else {
-                header.breadCrumbTitle = tv.string;
-            }
-        }
+        setTitle(header, sa.peekValue(R.styleable.PreferenceHeader_title));
+        setSummary(header, sa.peekValue(R.styleable.PreferenceHeader_summary));
+        setBreadCrumbTitle(header, sa.peekValue(R.styleable.PreferenceHeader_breadCrumbTitle));
         header.iconRes = sa.getResourceId(R.styleable.PreferenceHeader_icon, 0);
         header.fragment = sa.getString(R.styleable.PreferenceHeader_fragment);
         sa.recycle();
         parseIntentSection(context, parser, attrs, header);
         return header;
+    }
+
+    private static void setTitle(
+            @NonNull final Header header,
+            @Nullable final TypedValue tv) {
+        if (tv == null || tv.type != TypedValue.TYPE_STRING) {
+            return;
+        }
+        if (tv.resourceId != 0) {
+            header.titleRes = tv.resourceId;
+        } else {
+            header.title = tv.string;
+        }
+    }
+
+    private static void setSummary(
+            @NonNull final Header header,
+            @Nullable final TypedValue tv) {
+        if (tv == null || tv.type != TypedValue.TYPE_STRING) {
+            return;
+        }
+        if (tv.resourceId != 0) {
+            header.summaryRes = tv.resourceId;
+        } else {
+            header.summary = tv.string;
+        }
+    }
+
+    private static void setBreadCrumbTitle(
+            @NonNull final Header header,
+            @Nullable final TypedValue tv) {
+        if (tv == null || tv.type != TypedValue.TYPE_STRING) {
+            return;
+        }
+        if (tv.resourceId != 0) {
+            header.breadCrumbTitleRes = tv.resourceId;
+        } else {
+            header.breadCrumbTitle = tv.string;
+        }
     }
 
     private static void parseIntentSection(
@@ -134,16 +150,13 @@ class HeaderLoader {
             @NonNull final Header header)
             throws IOException, XmlPullParserException {
         final Bundle curBundle = new Bundle();
-        final int innerDepth = parser.getDepth();
+        final int startDepth = parser.getDepth();
         while (true) {
-            final int type2 = parser.next();
-            if (type2 == XmlPullParser.END_DOCUMENT) {
+            final int type = parser.next();
+            if (reachToEnd(type, parser.getDepth(), startDepth)) {
                 break;
             }
-            if (type2 == XmlPullParser.END_TAG && parser.getDepth() <= innerDepth) {
-                break;
-            }
-            if (type2 == XmlPullParser.END_TAG || type2 == XmlPullParser.TEXT) {
+            if (type == XmlPullParser.END_TAG || type == XmlPullParser.TEXT) {
                 continue;
             }
 
@@ -166,17 +179,24 @@ class HeaderLoader {
         }
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     private static void skipCurrentTag(final XmlPullParser parser)
             throws IOException, XmlPullParserException {
-        final int outerDepth = parser.getDepth();
-        while (true) {
-            final int type = parser.next();
-            if (type == XmlPullParser.END_DOCUMENT) {
-                break;
-            }
-            if (type == XmlPullParser.END_TAG && parser.getDepth() <= outerDepth) {
-                break;
-            }
+        final int startDepth = parser.getDepth();
+        while (!reachToEnd(parser.next(), parser.getDepth(), startDepth)) ;
+    }
+
+    @SuppressWarnings("RedundantIfStatement")
+    private static boolean reachToEnd(
+            final int type,
+            final int currentDepth,
+            final int startDepth) {
+        if (type == XmlPullParser.END_DOCUMENT) {
+            return true;
         }
+        if (type == XmlPullParser.END_TAG && currentDepth <= startDepth) {
+            return true;
+        }
+        return false;
     }
 }

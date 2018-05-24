@@ -9,6 +9,7 @@ package net.mm2d.preference;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.StateListDrawable;
@@ -32,10 +33,31 @@ import java.util.Objects;
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 class HeaderAdapter extends ArrayAdapter<Header> {
-    private static class HeaderViewHolder {
-        ImageView icon;
-        TextView title;
-        TextView summary;
+    private static class ViewHolder {
+        private final ImageView mIcon;
+        private final TextView mTitle;
+        private final TextView mSummary;
+
+        ViewHolder(
+                @NonNull final ImageView icon,
+                @NonNull final TextView title,
+                @NonNull final TextView summary) {
+            mIcon = icon;
+            mTitle = title;
+            mSummary = summary;
+        }
+
+        ImageView getIcon() {
+            return mIcon;
+        }
+
+        TextView getTitle() {
+            return mTitle;
+        }
+
+        TextView getSummary() {
+            return mSummary;
+        }
     }
 
     private final int mColorAccent;
@@ -61,37 +83,41 @@ class HeaderAdapter extends ArrayAdapter<Header> {
             final int position,
             @Nullable final View convertView,
             @NonNull final ViewGroup parent) {
-        final HeaderViewHolder holder;
+        final ViewHolder holder;
         final View view;
 
         if (convertView == null) {
             view = mInflater.inflate(R.layout.header_item, parent, false);
             setBackground(view);
-            holder = new HeaderViewHolder();
-            holder.icon = view.findViewById(R.id.icon);
-            holder.title = view.findViewById(R.id.title);
-            holder.summary = view.findViewById(R.id.summary);
+            holder = new ViewHolder(
+                    view.findViewById(R.id.icon),
+                    view.findViewById(R.id.title),
+                    view.findViewById(R.id.summary));
             view.setTag(holder);
         } else {
             view = convertView;
-            holder = (HeaderViewHolder) view.getTag();
+            holder = (ViewHolder) view.getTag();
         }
 
+        final ImageView icon = holder.getIcon();
+        final TextView title = holder.getTitle();
+        final TextView summary = holder.getSummary();
         final Header header = getItem(position);
         assert header != null;
         if (header.iconRes == 0) {
-            holder.icon.setVisibility(View.GONE);
+            icon.setVisibility(View.GONE);
         } else {
-            holder.icon.setVisibility(View.VISIBLE);
-            holder.icon.setImageResource(header.iconRes);
+            icon.setVisibility(View.VISIBLE);
+            icon.setImageResource(header.iconRes);
         }
-        holder.title.setText(header.getTitle(getContext().getResources()));
-        final CharSequence summary = header.getSummary(getContext().getResources());
-        if (!TextUtils.isEmpty(summary)) {
-            holder.summary.setVisibility(View.VISIBLE);
-            holder.summary.setText(summary);
+        final Resources resources = getContext().getResources();
+        title.setText(header.getTitle(resources));
+        final CharSequence text = header.getSummary(resources);
+        if (!TextUtils.isEmpty(text)) {
+            summary.setVisibility(View.VISIBLE);
+            summary.setText(text);
         } else {
-            holder.summary.setVisibility(View.GONE);
+            summary.setVisibility(View.GONE);
         }
         return view;
     }
