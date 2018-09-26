@@ -82,7 +82,7 @@ repositories {
 Add dependencies, as following.
 ```gradle
 dependencies {
-    implementation 'net.mm2d:preference:0.0.3'
+    implementation 'net.mm2d:preference:0.1.0'
 }
 ```
 

@@ -4,8 +4,8 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
 def versionMajor = 0
-def versionMinor = 0
-def versionPatch = 3
+def versionMinor = 1
+def versionPatch = 0
 
 group 'net.mm2d'
 archivesBaseName = 'preference'
