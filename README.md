@@ -88,7 +88,7 @@ dependencies {
 
 If you are using ProGuard, to load preference-header from xml, you might need to add the following option.
 ```
--keep public class * extends android.support.v7.preference.PreferenceFragmentCompat
+-keep public class * extends androidx.preference.PreferenceFragmentCompat
 ```
 
 ## Restriction
@@ -104,18 +104,18 @@ e.g.
 This class can handle only `preference-headers`.
 
 This class was created with the premise of using
-[`PreferenceFragmentCompat`](https://developer.android.com/reference/android/support/v7/preference/PreferenceFragmentCompat).
+[`PreferenceFragmentCompat`](https://developer.android.com/reference/androidx/preference/PreferenceFragmentCompat).
 Therefore, it is not a restriction of this class itself, but it has the same restrictions as `PreferenceFragmentCompat`.
 
 - We can't use `RingtonePreference`.
 This is because `RingtonePreference` doesn't exist in the
-[`android.support.v7.preference`](https://developer.android.com/reference/android/preference/package-summary) package.
+[`androidx.preference`](https://developer.android.com/reference/androidx/preference/package-summary) package.
 - `SwitchPreference` does not apply material design.
 Because
-[`android.support.v14.preference.SwitchPreference`](https://developer.android.com/reference/android/support/v14/preference/SwitchPreference)
+[`androidx.preference.SwitchPreference`](https://developer.android.com/reference/androidx/preference/SwitchPreference)
 is inflated.
 If you want to apply material design, use
-[`SwitchPreferenceCompat`](https://developer.android.com/reference/android/support/v7/preference/SwitchPreferenceCompat)
+[`SwitchPreferenceCompat`](https://developer.android.com/reference/androidx/preference/SwitchPreferenceCompat)
 instead.
 
 Please see the next section.
@@ -164,18 +164,18 @@ Use `net.mm2d.preference.Header` instead of `android.preference.PreferenceActivi
 - import android.preference.PreferenceActivity.Header;
 + import net.mm2d.preference.Header;
 ```
-Use `android.support.v7.preference` instead of `android.preference`
+Use `androidx.preference` instead of `android.preference`
 ```java
 - import android.preference.ListPreference;
 - import android.preference.Preference;
 - import android.preference.Preference.OnPreferenceChangeListener;
 - import android.preference.PreferenceFragment;
 - import android.preference.PreferenceManager;
-+ import android.support.v7.preference.ListPreference;
-+ import android.support.v7.preference.Preference;
-+ import android.support.v7.preference.Preference.OnPreferenceChangeListener;
-+ import android.support.v7.preference.PreferenceFragmentCompat;
-+ import android.support.v7.preference.PreferenceManager;
++ import androidx.preference.ListPreference;
++ import androidx.preference.Preference;
++ import androidx.preference.Preference.OnPreferenceChangeListener;
++ import androidx.preference.PreferenceFragmentCompat;
++ import androidx.preference.PreferenceManager;
 ```
 
 5. Change namespace of attributes to `app` instead of `android` in xml of `preference-headers`.

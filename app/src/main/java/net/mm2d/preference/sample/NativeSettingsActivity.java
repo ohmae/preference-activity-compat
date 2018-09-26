@@ -8,10 +8,11 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import java.util.List;
+
+import androidx.appcompat.app.ActionBar;
 
 public class NativeSettingsActivity extends AppCompatPreferenceActivity {
     private static final OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {

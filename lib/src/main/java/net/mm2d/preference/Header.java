@@ -12,8 +12,9 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.StringRes;
 import android.text.TextUtils;
+
+import androidx.annotation.StringRes;
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
