@@ -6,9 +6,13 @@ apply plugin: 'com.github.dcendents.android-maven'
 def versionMajor = 0
 def versionMinor = 1
 def versionPatch = 0
+def packageName = 'net.mm2d'
+def libraryId = 'preference'
+def siteUrl = 'https://github.com/ohmae/preference-activity-compat'
+def githubUrl = 'https://github.com/ohmae/preference-activity-compat'
 
-group 'net.mm2d'
-archivesBaseName = 'preference'
+group packageName
+archivesBaseName = libraryId
 version "${versionMajor}.${versionMinor}.${versionPatch}"
 
 android {
@@ -37,10 +41,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
 }
-
-def libraryId = 'preference'
-def siteUrl = 'https://github.com/ohmae/preference-activity-compat'
-def githubUrl = 'https://github.com/ohmae/preference-activity-compat'
 
 bintray {
     user = project.hasProperty('bintray_user') ? bintray_user : ''
