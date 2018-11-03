@@ -5,7 +5,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 def versionMajor = 0
 def versionMinor = 0
-def versionPatch = 3
+def versionPatch = 4
 def packageName = 'net.mm2d'
 def libraryId = 'preference'
 def siteUrl = 'https://github.com/ohmae/preference-activity-compat'
