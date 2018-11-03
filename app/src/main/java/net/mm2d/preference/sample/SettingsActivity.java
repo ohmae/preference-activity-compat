@@ -1,5 +1,6 @@
 package net.mm2d.preference.sample;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -11,8 +12,16 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceGroup;
+import android.support.v7.preference.PreferenceGroupAdapter;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.preference.PreferenceScreen;
+import android.support.v7.preference.PreferenceViewHolder;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import net.mm2d.preference.Header;
 import net.mm2d.preference.PreferenceActivityCompat;
@@ -88,7 +97,7 @@ public class SettingsActivity extends PreferenceActivityCompat {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class GeneralPreferenceFragment extends PreferenceFragmentCompat {
+    public static class GeneralPreferenceFragment extends CustomPreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(
                 final Bundle savedInstanceState,
@@ -103,7 +112,7 @@ public class SettingsActivity extends PreferenceActivityCompat {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class NotificationPreferenceFragment extends PreferenceFragmentCompat {
+    public static class NotificationPreferenceFragment extends CustomPreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(
                 final Bundle savedInstanceState,
@@ -115,7 +124,7 @@ public class SettingsActivity extends PreferenceActivityCompat {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class DataSyncPreferenceFragment extends PreferenceFragmentCompat {
+    public static class DataSyncPreferenceFragment extends CustomPreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(
                 final Bundle savedInstanceState,
@@ -123,6 +132,38 @@ public class SettingsActivity extends PreferenceActivityCompat {
             addPreferencesFromResource(R.xml.pref_data_sync);
             setHasOptionsMenu(true);
             bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+        }
+    }
+
+    private static abstract class CustomPreferenceFragmentCompat extends PreferenceFragmentCompat {
+        @Override
+        protected Adapter onCreateAdapter(final PreferenceScreen preferenceScreen) {
+            return new CustomPreferenceGroupAdapter(preferenceScreen);
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private static class CustomPreferenceGroupAdapter extends PreferenceGroupAdapter {
+        CustomPreferenceGroupAdapter(final PreferenceGroup preferenceGroup) {
+            super(preferenceGroup);
+        }
+
+        @NonNull
+        @Override
+        public PreferenceViewHolder onCreateViewHolder(
+                final ViewGroup parent,
+                final int viewType) {
+            final PreferenceViewHolder holder = super.onCreateViewHolder(parent, viewType);
+            final View icon = holder.findViewById(android.R.id.icon);
+            if (icon != null) {
+                final ViewParent p = icon.getParent();
+                if (p instanceof View) {
+                    final View parentView = (View) p;
+                    parentView.setMinimumWidth(0);
+                    parentView.setPadding(0,0,0,0);
+                }
+            }
+            return holder;
         }
     }
 }
