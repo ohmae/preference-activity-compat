@@ -86,6 +86,9 @@ dependencies {
 }
 ```
 
+0.1.0~ this library depends on androidx.
+If you need to use support library 28.0.0, use 0.4.0.
+
 If you are using ProGuard, to load preference-header from xml, you might need to add the following option.
 ```
 -keep public class * extends androidx.preference.PreferenceFragmentCompat
@@ -117,6 +120,8 @@ is inflated.
 If you want to apply material design, use
 [`SwitchPreferenceCompat`](https://developer.android.com/reference/androidx/preference/SwitchPreferenceCompat)
 instead.
+
+[`androidx.preference`](https://developer.android.com/reference/androidx/preference/package-summary) has various problems, so I recommend to use this library together with other OSS for further improvement.
 
 Please see the next section.
 
