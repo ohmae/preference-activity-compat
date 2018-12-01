@@ -1,4 +1,7 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <PreferenceCategory
         android:title="@string/pref_title_new_message_notifications"
@@ -8,6 +11,7 @@
             android:defaultValue="true"
             android:key="notifications_new_message"
             android:title="@string/pref_title_new_message_notifications"
+            app:iconSpaceReserved="false"
             />
 
         <!--suppress AndroidElementNotAllowed -->
@@ -16,6 +20,7 @@
             android:dependency="notifications_new_message"
             android:key="notifications_new_message_vibrate"
             android:title="@string/pref_title_vibrate"
+            app:iconSpaceReserved="false"
             />
     </PreferenceCategory>
 
