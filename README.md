@@ -143,12 +143,32 @@ Please see the next section.
 - public class SettingsActivity extends AppCompatPreferenceActivity {
 + public class SettingsActivity extends PreferenceActivityCompat {
 ```
+
 At that time, change the `isValidFragment` from `protected` to `public`.
 ```java
     @Override
 -     protected boolean isValidFragment(final String fragmentName) {
 +     public boolean isValidFragment(final String fragmentName) {
 ```
+
+If you override `onMenuItemSelected`, replace it with `onOptionsItemSelected`.
+```java
+    @Override
+-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
++    public boolean onOptionsItemSelected(final MenuItem item) {
+        final int id = item.getItemId();
+        if (id == android.R.id.home) {
+-            if (!super.onMenuItemSelected(featureId, item)) {
++            if (!super.onOptionsItemSelected(item)) {
+                NavUtils.navigateUpFromSameTask(this);
+            }
+            return true;
+        }
+-        return super.onMenuItemSelected(featureId, item);
++        return super.onOptionsItemSelected(item);
+    }
+```
+
 
 3. Change the parent of Fragment corresponding to each `PreferenceScreen` from `PreferenceFragment` to `PreferenceFragmentCompat`.
 And implement `onCreatePreferences` instead of `onCreate`
