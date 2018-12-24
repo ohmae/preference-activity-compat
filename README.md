@@ -127,7 +127,7 @@ Please see the next section.
 
 ## Migrate from AppCompatPreferenceActivity
 
-1. Add `preferenceTheme` in `PreferenceActivity`'s theme. (important!)
+1. Add `preferenceTheme` in `PreferenceActivity`'s theme. (**important!**)
 ```xml
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -218,7 +218,7 @@ Use `androidx.preference` instead of `android.preference`
         />
 ```
 
-6. Change tag to `SwitchPreferenceCompat` instead of `SwtichPreference` in xml of`PreferenceScreen`, if you need.
+6. Change tag to `SwitchPreferenceCompat` instead of `SwtichPreference` in xml of `PreferenceScreen`, if you need.
 ```xml
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 -     <SwitchPreference
@@ -230,6 +230,13 @@ Use `androidx.preference` instead of `android.preference`
         android:title="@string/pref_title_social_recommendations"
         />
 ```
+
+7. If you do not need the space for the icon, add `app:iconSpaceReserved="false"`
+(This is a constraint of PreferenceFragmentCompat rather than this library)
+
+|default|`app:iconSpaceReserved="false"`|
+|:-:|:-:|
+|![](readme/icon-space-reserved-true.png)|![](readme/icon-space-reserved-false.png)|
 
 ## Author
 大前 良介 (OHMAE Ryosuke)
