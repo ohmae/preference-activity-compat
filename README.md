@@ -127,7 +127,7 @@ Please see the next section.
 
 ## Migrate from AppCompatPreferenceActivity
 
-1. Add `preferenceTheme` in `PreferenceActivity`'s theme. (**important!**)
+### 1. Add `preferenceTheme` in `PreferenceActivity`'s theme. (**important!**)
 ```xml
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -138,7 +138,7 @@ Please see the next section.
     </style>
 ```
 
-2. Replace `SettingsActivity`'s super class
+### 2. Replace `SettingsActivity`'s super class
 ```java
 - public class SettingsActivity extends AppCompatPreferenceActivity {
 + public class SettingsActivity extends PreferenceActivityCompat {
@@ -169,8 +169,7 @@ If you override `onMenuItemSelected`, replace it with `onOptionsItemSelected`.
     }
 ```
 
-
-3. Change the parent of Fragment corresponding to each `PreferenceScreen` from `PreferenceFragment` to `PreferenceFragmentCompat`.
+### 3. Change the parent of Fragment corresponding to each `PreferenceScreen` from `PreferenceFragment` to `PreferenceFragmentCompat`.
 And implement `onCreatePreferences` instead of `onCreate`
 ```java
 -     public static class GeneralPreferenceFragment extends PreferenceFragment {
@@ -183,7 +182,7 @@ And implement `onCreatePreferences` instead of `onCreate`
         }
 ```
 
-4. Change package import.
+### 4. Change package import.
 Use `net.mm2d.preference.Header` instead of `android.preference.PreferenceActivity.Header`
 ```java
 - import android.preference.PreferenceActivity.Header;
@@ -203,7 +202,7 @@ Use `androidx.preference` instead of `android.preference`
 + import androidx.preference.PreferenceManager;
 ```
 
-5. Change namespace of attributes to `app` instead of `android` in xml of `preference-headers`.
+### 5. Change namespace of attributes to `app` instead of `android` in xml of `preference-headers`.
 ```xml
 <preference-headers
 -     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -218,7 +217,10 @@ Use `androidx.preference` instead of `android.preference`
         />
 ```
 
-6. Change tag to `SwitchPreferenceCompat` instead of `SwtichPreference` in xml of `PreferenceScreen`, if you need.
+### 6. Change tag to `SwitchPreferenceCompat` instead of `SwtichPreference` in xml of `PreferenceScreen`, if you need.
+
+(This is a constraint of PreferenceFragmentCompat rather than this library)
+
 ```xml
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 -     <SwitchPreference
@@ -231,8 +233,24 @@ Use `androidx.preference` instead of `android.preference`
         />
 ```
 
-7. If you do not need the space for the icon, add `app:iconSpaceReserved="false"`
+Because SwitchPreference looks legacy in Android 4.4 or less.
+
+|SwitchPreference|SwitchPreferenceCompat|
+|:-:|:-:|
+|![](readme/switch-preference.png)|![](readme/switch-preference-compat.png)|
+
+If your target is Android 5 or later, you do not have to replace it.
+
+### 7. If you do not need the space for the icon, add `app:iconSpaceReserved="false"`
+
 (This is a constraint of PreferenceFragmentCompat rather than this library)
+
+```xml
+    <Preference
+        android:title="@string/pref_title_system_sync_settings"
++         app:iconSpaceReserved="false"
+        >
+```
 
 |default|`app:iconSpaceReserved="false"`|
 |:-:|:-:|
