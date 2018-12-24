@@ -169,8 +169,10 @@ If you override `onMenuItemSelected`, replace it with `onOptionsItemSelected`.
     }
 ```
 
-### 3. Change the parent of Fragment corresponding to each `PreferenceScreen` from `PreferenceFragment` to `PreferenceFragmentCompat`.
+### 3. Replace `PreferenceFragment` to `PreferenceFragmentCompat`
+
 And implement `onCreatePreferences` instead of `onCreate`
+
 ```java
 -     public static class GeneralPreferenceFragment extends PreferenceFragment {
 +     public static class GeneralPreferenceFragment extends PreferenceFragmentCompat {
@@ -182,13 +184,17 @@ And implement `onCreatePreferences` instead of `onCreate`
         }
 ```
 
-### 4. Change package import.
+### 4. Change package import
+
 Use `net.mm2d.preference.Header` instead of `android.preference.PreferenceActivity.Header`
+
 ```java
 - import android.preference.PreferenceActivity.Header;
 + import net.mm2d.preference.Header;
 ```
+
 Use `androidx.preference` instead of `android.preference`
+
 ```java
 - import android.preference.ListPreference;
 - import android.preference.Preference;
@@ -202,7 +208,8 @@ Use `androidx.preference` instead of `android.preference`
 + import androidx.preference.PreferenceManager;
 ```
 
-### 5. Change namespace of attributes to `app` instead of `android` in xml of `preference-headers`.
+### 5. Change namespace of attributes to `app` instead of `android` in xml of `preference-headers`
+
 ```xml
 <preference-headers
 -     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -217,7 +224,7 @@ Use `androidx.preference` instead of `android.preference`
         />
 ```
 
-### 6. Change tag to `SwitchPreferenceCompat` instead of `SwtichPreference` in xml of `PreferenceScreen`, if you need.
+### 6. Replace `SwtichPreference` to `SwitchPreferenceCompat`, if you need
 
 (This is a description of PreferenceFragmentCompat, not this library)
 
@@ -241,7 +248,7 @@ Because SwitchPreference looks legacy in Android 4.4 or less.
 
 If your target is Android 5 or later, you do not have to replace it.
 
-### 7. If you do not need the space for the icon, add `app:iconSpaceReserved="false"`
+### 7. Add `app:iconSpaceReserved="false"`, If you do not need the space for the icon
 
 (This is a description of PreferenceFragmentCompat, not this library)
 
