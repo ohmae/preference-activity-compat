@@ -219,7 +219,7 @@ Use `androidx.preference` instead of `android.preference`
 
 ### 6. Change tag to `SwitchPreferenceCompat` instead of `SwtichPreference` in xml of `PreferenceScreen`, if you need.
 
-(This is a constraint of PreferenceFragmentCompat rather than this library)
+(This is a description of PreferenceFragmentCompat, not this library)
 
 ```xml
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
@@ -243,7 +243,7 @@ If your target is Android 5 or later, you do not have to replace it.
 
 ### 7. If you do not need the space for the icon, add `app:iconSpaceReserved="false"`
 
-(This is a constraint of PreferenceFragmentCompat rather than this library)
+(This is a description of PreferenceFragmentCompat, not this library)
 
 ```xml
     <Preference
