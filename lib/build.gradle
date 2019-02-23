@@ -3,15 +3,9 @@ apply plugin: 'maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
-def versionMajor = 0
-def versionMinor = 1
-def versionPatch = 0
-def packageName = 'net.mm2d'
 def libraryId = 'preference'
-def siteUrl = 'https://github.com/ohmae/preference-activity-compat'
-def githubUrl = 'https://github.com/ohmae/preference-activity-compat'
 
-group packageName
+group groupId
 archivesBaseName = libraryId
 version "${versionMajor}.${versionMinor}.${versionPatch}"
 
@@ -34,7 +28,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
