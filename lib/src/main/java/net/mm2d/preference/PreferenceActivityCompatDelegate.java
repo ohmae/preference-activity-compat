@@ -39,7 +39,7 @@ import androidx.preference.Preference;
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-public class PreferenceActivityCompatDelegate {
+class PreferenceActivityCompatDelegate {
     public interface Connector {
         void onBuildHeaders(@NonNull List<Header> target);
 
@@ -48,7 +48,7 @@ public class PreferenceActivityCompatDelegate {
         boolean isValidFragment(@Nullable String fragmentName);
     }
 
-    public static final long HEADER_ID_UNDEFINED = -1;
+    static final long HEADER_ID_UNDEFINED = -1;
 
     private static final String HEADERS_TAG = ":android:headers";
     private static final String CUR_HEADER_TAG = ":android:cur_header";
@@ -98,7 +98,7 @@ public class PreferenceActivityCompatDelegate {
         }
     };
 
-    public PreferenceActivityCompatDelegate(
+    PreferenceActivityCompatDelegate(
             @NonNull final FragmentActivity activity,
             @NonNull final Connector connector) {
         mActivity = activity;
@@ -142,7 +142,7 @@ public class PreferenceActivityCompatDelegate {
         return mActivity.findViewById(id);
     }
 
-    public void onCreate(@Nullable final Bundle savedInstanceState) {
+    void onCreate(@Nullable final Bundle savedInstanceState) {
         setContentView(R.layout.mm2d_pac_content);
         mList = findViewById(R.id.list);
         mList.setOnItemClickListener(mOnClickListener);
@@ -198,12 +198,12 @@ public class PreferenceActivityCompatDelegate {
         }
     }
 
-    public void onDestroy() {
+    void onDestroy() {
         mHandler.removeCallbacks(mBuildHeaders);
         mHandler.removeCallbacks(mRequestFocus);
     }
 
-    public void onSaveInstanceState(@NonNull final Bundle outState) {
+    void onSaveInstanceState(@NonNull final Bundle outState) {
         if (mHeaders.size() > 0) {
             outState.putParcelableArrayList(HEADERS_TAG, mHeaders);
             if (mCurHeader != null) {
@@ -215,7 +215,7 @@ public class PreferenceActivityCompatDelegate {
         }
     }
 
-    public void onRestoreInstanceState(@NonNull final Bundle state) {
+    void onRestoreInstanceState(@NonNull final Bundle state) {
         if (!mSinglePane) {
             if (mCurHeader != null) {
                 setSelectedHeader(mCurHeader);
@@ -223,7 +223,7 @@ public class PreferenceActivityCompatDelegate {
         }
     }
 
-    public boolean onBackPressed() {
+    boolean onBackPressed() {
         final FragmentManager manager = getFragmentManager();
         if (mCurHeader == null || !mSinglePane || manager.getBackStackEntryCount() != 0) {
             return false;
@@ -247,20 +247,20 @@ public class PreferenceActivityCompatDelegate {
         mList.setAdapter(adapter);
     }
 
-    public int getSelectedItemPosition() {
+    int getSelectedItemPosition() {
         return mList.getSelectedItemPosition();
     }
 
-    public boolean hasHeaders() {
+    boolean hasHeaders() {
         return mHeadersContainer != null && mHeadersContainer.getVisibility() == View.VISIBLE;
     }
 
     @NonNull
-    public List<Header> getHeaders() {
+    List<Header> getHeaders() {
         return mHeaders;
     }
 
-    public boolean isMultiPane() {
+    boolean isMultiPane() {
         return !mSinglePane;
     }
 
@@ -275,18 +275,18 @@ public class PreferenceActivityCompatDelegate {
         throw new IllegalStateException("Must have at least one header with a fragment");
     }
 
-    public void invalidateHeaders() {
+    void invalidateHeaders() {
         mHandler.removeCallbacks(mBuildHeaders);
         mHandler.post(mBuildHeaders);
     }
 
-    public void loadHeadersFromResource(
+    void loadHeadersFromResource(
             @XmlRes final int resId,
             @NonNull final List<Header> target) {
         HeaderLoader.loadFromResource(getContext(), resId, target);
     }
 
-    public void setListFooter(@NonNull final View view) {
+    void setListFooter(@NonNull final View view) {
         mListFooter.removeAllViews();
         mListFooter.addView(view, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
@@ -311,7 +311,7 @@ public class PreferenceActivityCompatDelegate {
         }
     }
 
-    public void switchToHeader(@NonNull final Header header) {
+    void switchToHeader(@NonNull final Header header) {
         if (mCurHeader == header) {
             getFragmentManager().popBackStack(BACK_STACK_PREFS, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         } else {
@@ -376,7 +376,7 @@ public class PreferenceActivityCompatDelegate {
         }
     }
 
-    public void startPreferenceFragment(@NonNull final Preference pref) {
+    void startPreferenceFragment(@NonNull final Preference pref) {
         final Fragment fragment = Fragment.instantiate(getContext(), pref.getFragment(), pref.getExtras());
         getFragmentManager().beginTransaction()
                 .replace(R.id.prefs, fragment)
