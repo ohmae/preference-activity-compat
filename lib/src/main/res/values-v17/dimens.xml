@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="breadcrumbs_margin_start">32dp</dimen>
+    <dimen name="mm2d_pac_breadcrumbs_margin_start">32dp</dimen>
 
-    <dimen name="category_margin_start">8dp</dimen>
+    <dimen name="mm2d_pac_category_margin_start">8dp</dimen>
 </resources>

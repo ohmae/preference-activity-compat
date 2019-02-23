@@ -43,8 +43,8 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:singleLine="true"
-            android:textColor="@color/text_color_primary_activated"
-            android:textSize="@dimen/text_size_subhead"
+            android:textColor="@color/mm2d_pac_text_color_primary_activated"
+            android:textSize="@dimen/mm2d_pac_text_size_subhead"
             />
 
         <TextView
@@ -56,8 +56,8 @@
             android:layout_below="@id/title"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textColor="@color/text_color_secondary_activated"
-            android:textSize="@dimen/text_size_body"
+            android:textColor="@color/mm2d_pac_text_color_secondary_activated"
+            android:textSize="@dimen/mm2d_pac_text_size_body"
             />
     </RelativeLayout>
 </LinearLayout>

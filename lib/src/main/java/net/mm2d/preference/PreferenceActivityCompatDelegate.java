@@ -143,7 +143,7 @@ public class PreferenceActivityCompatDelegate {
     }
 
     public void onCreate(@Nullable final Bundle savedInstanceState) {
-        setContentView(R.layout.content);
+        setContentView(R.layout.mm2d_pac_content);
         mList = findViewById(R.id.list);
         mList.setOnItemClickListener(mOnClickListener);
         if (mFinishedStart) {

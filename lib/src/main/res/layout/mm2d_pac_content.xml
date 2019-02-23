@@ -12,16 +12,16 @@
         android:id="@+id/headers"
         android:layout_width="0px"
         android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/side_margin_negative"
-        android:layout_marginLeft="@dimen/side_margin"
-        android:layout_marginRight="@dimen/side_margin_negative"
-        android:layout_marginStart="@dimen/side_margin"
-        android:layout_weight="@integer/left_pane_weight"
+        android:layout_marginEnd="@dimen/mm2d_pac_side_margin_negative"
+        android:layout_marginLeft="@dimen/mm2d_pac_side_margin"
+        android:layout_marginRight="@dimen/mm2d_pac_side_margin_negative"
+        android:layout_marginStart="@dimen/mm2d_pac_side_margin"
+        android:layout_weight="@integer/mm2d_pac_left_pane_weight"
         android:background="?android:attr/windowBackground"
         android:elevation="4dp"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/header_vertical_padding"
-        android:paddingTop="@dimen/header_vertical_padding"
+        android:paddingBottom="@dimen/mm2d_pac_header_vertical_padding"
+        android:paddingTop="@dimen/mm2d_pac_header_vertical_padding"
         tools:ignore="NestedWeights,UnusedAttribute"
         >
 
@@ -48,18 +48,18 @@
 
     </LinearLayout>
 
-    <include layout="@layout/vertical_divider"/>
+    <include layout="@layout/mm2d_pac_vertical_divider"/>
 
     <LinearLayout
         android:id="@+id/prefs_frame"
         style="?attr/preferencePanelStyle"
         android:layout_width="0px"
         android:layout_height="match_parent"
-        android:layout_weight="@integer/right_pane_weight"
+        android:layout_weight="@integer/mm2d_pac_right_pane_weight"
         android:orientation="vertical"
         >
 
-        <include layout="@layout/breadcrumbs"/>
+        <include layout="@layout/mm2d_pac_breadcrumbs"/>
 
         <android.preference.PreferenceFrameLayout
             android:id="@+id/prefs"

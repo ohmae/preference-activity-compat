@@ -87,7 +87,7 @@ dependencies {
 ```
 
 0.1.0~ this library depends on androidx.
-If you need to use support library 28.0.0, use 0.4.0.
+If you need to use support library 28.0.0, use 0.0.4.
 
 If you are using ProGuard, to load preference-header from xml, you might need to add the following option.
 ```
@@ -262,6 +262,15 @@ If your target is Android 5 or later, you do not have to replace it.
 |default|`app:iconSpaceReserved="false"`|
 |:-:|:-:|
 |![](readme/icon-space-reserved-true.png)|![](readme/icon-space-reserved-false.png)|
+
+## Dependent OSS
+
+### touchicon
+
+- [Kotlin](https://kotlinlang.org/)
+- [Android Jetpack](https://developer.android.com/jetpack/)
+  - androidx.appcompat:appcompat
+  - androidx.preference:preference
 
 ## Author
 大前 良介 (OHMAE Ryosuke)

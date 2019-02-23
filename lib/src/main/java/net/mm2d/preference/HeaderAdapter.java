@@ -88,7 +88,7 @@ class HeaderAdapter extends ArrayAdapter<Header> {
         final View view;
 
         if (convertView == null) {
-            view = mInflater.inflate(R.layout.header_item, parent, false);
+            view = mInflater.inflate(R.layout.mm2d_pac_header_item, parent, false);
             setBackground(view);
             holder = new ViewHolder(
                     view.findViewById(R.id.icon),

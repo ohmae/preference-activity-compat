@@ -6,6 +6,6 @@
     </style>
 
     <style name="PreferenceCategoryCompat" parent="@style/Preference.Category">
-        <item name="android:layout">@layout/preference_category_compat</item>
+        <item name="android:layout">@layout/mm2d_pac_preference_category_compat</item>
     </style>
 </resources>

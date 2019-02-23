@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="dual_pane">false</bool>
+    <bool name="mm2d_pac_dual_pane">false</bool>
 </resources>

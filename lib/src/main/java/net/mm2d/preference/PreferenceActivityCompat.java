@@ -66,7 +66,7 @@ public class PreferenceActivityCompat extends AppCompatActivity implements
 
     @Override
     public boolean onIsMultiPane() {
-        return getResources().getBoolean(R.bool.dual_pane);
+        return getResources().getBoolean(R.bool.mm2d_pac_dual_pane);
     }
 
     @Override
