@@ -2,7 +2,7 @@ buildscript {
     ext {
         versionMajor = 0
         versionMinor = 1
-        versionPatch = 0
+        versionPatch = 1
         groupId = 'net.mm2d'
         siteUrl = 'https://github.com/ohmae/preference-activity-compat'
         githubUrl = 'https://github.com/ohmae/preference-activity-compat'
