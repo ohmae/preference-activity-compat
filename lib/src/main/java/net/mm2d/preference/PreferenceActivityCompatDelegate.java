@@ -71,7 +71,7 @@ class PreferenceActivityCompatDelegate {
     private ViewGroup mHeadersContainer;
     private TextView mBreadCrumbTitle;
     private boolean mSinglePane;
-    private Header mCurHeader;
+    private Header mCurrentHeader;
     private final Handler mHandler = new Handler();
     private Fragment mFragment;
 
@@ -89,8 +89,8 @@ class PreferenceActivityCompatDelegate {
             if (mAdapter instanceof BaseAdapter) {
                 ((BaseAdapter) mAdapter).notifyDataSetChanged();
             }
-            if (mCurHeader != null) {
-                final Header mappedHeader = findBestMatchingHeader(mCurHeader, mHeaders);
+            if (mCurrentHeader != null) {
+                final Header mappedHeader = findBestMatchingHeader(mCurrentHeader, mHeaders);
                 if (mappedHeader != null) {
                     setSelectedHeader(mappedHeader);
                 }
@@ -188,13 +188,13 @@ class PreferenceActivityCompatDelegate {
             }
         }
         if (mSinglePane) {
-            if (mCurHeader != null) {
+            if (mCurrentHeader != null) {
                 mHeadersContainer.setVisibility(View.GONE);
             } else {
                 mPrefsContainer.setVisibility(View.GONE);
             }
-        } else if (mHeaders.size() > 0 && mCurHeader != null) {
-            setSelectedHeader(mCurHeader);
+        } else if (mHeaders.size() > 0 && mCurrentHeader != null) {
+            setSelectedHeader(mCurrentHeader);
         }
     }
 
@@ -206,8 +206,8 @@ class PreferenceActivityCompatDelegate {
     void onSaveInstanceState(@NonNull final Bundle outState) {
         if (mHeaders.size() > 0) {
             outState.putParcelableArrayList(HEADERS_TAG, mHeaders);
-            if (mCurHeader != null) {
-                final int index = mHeaders.indexOf(mCurHeader);
+            if (mCurrentHeader != null) {
+                final int index = mHeaders.indexOf(mCurrentHeader);
                 if (index >= 0) {
                     outState.putInt(CUR_HEADER_TAG, index);
                 }
@@ -217,15 +217,15 @@ class PreferenceActivityCompatDelegate {
 
     void onRestoreInstanceState(@NonNull final Bundle state) {
         if (!mSinglePane) {
-            if (mCurHeader != null) {
-                setSelectedHeader(mCurHeader);
+            if (mCurrentHeader != null) {
+                setSelectedHeader(mCurrentHeader);
             }
         }
     }
 
     boolean onBackPressed() {
         final FragmentManager manager = getFragmentManager();
-        if (mCurHeader == null || !mSinglePane || manager.getBackStackEntryCount() != 0) {
+        if (mCurrentHeader == null || !mSinglePane || manager.getBackStackEntryCount() != 0) {
             return false;
         }
         if (mFragment != null) {
@@ -234,7 +234,7 @@ class PreferenceActivityCompatDelegate {
                     .commitAllowingStateLoss();
             mFragment = null;
         }
-        mCurHeader = null;
+        mCurrentHeader = null;
         mPrefsContainer.setVisibility(View.GONE);
         mHeadersContainer.setVisibility(View.VISIBLE);
         showBreadCrumbs(getTitle());
@@ -312,7 +312,7 @@ class PreferenceActivityCompatDelegate {
     }
 
     void switchToHeader(@NonNull final Header header) {
-        if (mCurHeader == header) {
+        if (mCurrentHeader == header) {
             getFragmentManager().popBackStack(BACK_STACK_PREFS, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         } else {
             if (header.fragment == null) {
@@ -346,7 +346,7 @@ class PreferenceActivityCompatDelegate {
     }
 
     private void setSelectedHeader(@NonNull final Header header) {
-        mCurHeader = header;
+        mCurrentHeader = header;
         final int index = mHeaders.indexOf(header);
         if (index >= 0) {
             mList.setItemChecked(index, true);
@@ -393,9 +393,7 @@ class PreferenceActivityCompatDelegate {
         final ArrayList<Header> matches = new ArrayList<>();
         for (final Header oh : from) {
             if (current == oh || (current.id != HEADER_ID_UNDEFINED && current.id == oh.id)) {
-                matches.clear();
-                matches.add(oh);
-                break;
+                return oh;
             }
             if (current.fragment != null) {
                 if (current.fragment.equals(oh.fragment)) {

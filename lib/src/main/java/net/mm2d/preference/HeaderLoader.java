@@ -62,11 +62,10 @@ class HeaderLoader {
                 break;
             }
         }
-        String nodeName = parser.getName();
-        if (!"preference-headers".equals(nodeName)) {
+        if (!"preference-headers".equals(parser.getName())) {
             throw new RuntimeException(
                     "XML document must start with <preference-headers> tag; found"
-                            + nodeName + " at " + parser.getPositionDescription());
+                            + parser.getName() + " at " + parser.getPositionDescription());
         }
         final int startDepth = parser.getDepth();
         while (true) {
@@ -78,8 +77,7 @@ class HeaderLoader {
                 continue;
             }
 
-            nodeName = parser.getName();
-            if ("header".equals(nodeName)) {
+            if ("header".equals(parser.getName())) {
                 target.add(parseHeaderSection(context, parser, attrs));
             } else {
                 skipCurrentTag(parser);
@@ -187,7 +185,6 @@ class HeaderLoader {
         while (!reachToEnd(parser.next(), parser.getDepth(), startDepth)) ;
     }
 
-    @SuppressWarnings("RedundantIfStatement")
     private static boolean reachToEnd(
             final int type,
             final int currentDepth,
@@ -195,9 +192,6 @@ class HeaderLoader {
         if (type == XmlPullParser.END_DOCUMENT) {
             return true;
         }
-        if (type == XmlPullParser.END_TAG && currentDepth <= startDepth) {
-            return true;
-        }
-        return false;
+        return type == XmlPullParser.END_TAG && currentDepth <= startDepth;
     }
 }

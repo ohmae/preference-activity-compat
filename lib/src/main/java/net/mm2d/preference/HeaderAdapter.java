@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,8 +68,7 @@ class HeaderAdapter extends ArrayAdapter<Header> {
             @NonNull final Context context,
             @NonNull final List<Header> objects) {
         super(context, 0, objects);
-        final Object service = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mInflater = (LayoutInflater) Objects.requireNonNull(service);
+        mInflater = LayoutInflater.from(context);
         if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
             mColorAccent = getThemeAttrColor(context, R.attr.colorAccent);
         } else {
@@ -101,10 +99,7 @@ class HeaderAdapter extends ArrayAdapter<Header> {
         }
 
         final ImageView icon = holder.getIcon();
-        final TextView title = holder.getTitle();
-        final TextView summary = holder.getSummary();
         final Header header = getItem(position);
-        assert header != null;
         if (header.iconRes == 0) {
             icon.setVisibility(View.GONE);
         } else {
@@ -112,7 +107,8 @@ class HeaderAdapter extends ArrayAdapter<Header> {
             icon.setImageResource(header.iconRes);
         }
         final Resources resources = getContext().getResources();
-        title.setText(header.getTitle(resources));
+        holder.getTitle().setText(header.getTitle(resources));
+        final TextView summary = holder.getSummary();
         final CharSequence text = header.getSummary(resources);
         if (!TextUtils.isEmpty(text)) {
             summary.setVisibility(View.VISIBLE);
