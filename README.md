@@ -72,15 +72,11 @@ But **the native Fragment is deprecated**.
 
 ## How to use
 
-You can download this library from jCenter.
+Download from jCenter. Add dependencies, as following.
 ```gradle
 repositories {
     jcenter()
 }
-```
-
-Add dependencies, as following.
-```gradle
 dependencies {
     implementation 'net.mm2d:preference:0.1.0'
 }
