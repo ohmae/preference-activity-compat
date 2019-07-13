@@ -47,8 +47,8 @@ class SettingsActivity : PreferenceActivityCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.pref_general)
             setHasOptionsMenu(true)
-            bindPreferenceSummaryToValue(findPreference("example_text"))
-            bindPreferenceSummaryToValue(findPreference("example_list"))
+            bindPreferenceSummaryToValue(findPreference("example_text")!!)
+            bindPreferenceSummaryToValue(findPreference("example_list")!!)
         }
     }
 
@@ -65,7 +65,7 @@ class SettingsActivity : PreferenceActivityCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.pref_data_sync)
             setHasOptionsMenu(true)
-            bindPreferenceSummaryToValue(findPreference("sync_frequency"))
+            bindPreferenceSummaryToValue(findPreference("sync_frequency")!!)
         }
     }
 
