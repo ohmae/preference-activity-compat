@@ -7,7 +7,7 @@
     <dimen name="mm2d_pac_side_margin_negative">0dp</dimen>
     <dimen name="mm2d_pac_header_vertical_padding">0dp</dimen>
 
-    <dimen name="mm2d_pac_breadcrumbs_margin_start">56dp</dimen>
+    <dimen name="mm2d_pac_breadcrumbs_margin_start">24dp</dimen>
     <dimen name="mm2d_pac_breadcrumbs_margin_end">0dp</dimen>
 
     <dimen name="mm2d_pac_category_margin_bottom">1dp</dimen>

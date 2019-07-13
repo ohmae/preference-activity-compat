@@ -27,7 +27,6 @@
 
         <ListView
             android:id="@+id/list"
-            style="?attr/preferenceListStyle"
             android:layout_width="match_parent"
             android:layout_height="0px"
             android:layout_weight="1"
@@ -52,7 +51,6 @@
 
     <LinearLayout
         android:id="@+id/prefs_frame"
-        style="?attr/preferencePanelStyle"
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="@integer/mm2d_pac_right_pane_weight"
@@ -61,7 +59,7 @@
 
         <include layout="@layout/mm2d_pac_breadcrumbs"/>
 
-        <android.preference.PreferenceFrameLayout
+        <FrameLayout
             android:id="@+id/prefs"
             android:layout_width="match_parent"
             android:layout_height="0dip"
