@@ -50,7 +50,7 @@
     <include layout="@layout/mm2d_pac_vertical_divider"/>
 
     <LinearLayout
-        android:id="@+id/prefs_frame"
+        android:id="@+id/preference_frame"
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="@integer/mm2d_pac_right_pane_weight"
@@ -60,7 +60,7 @@
         <include layout="@layout/mm2d_pac_breadcrumbs"/>
 
         <FrameLayout
-            android:id="@+id/prefs"
+            android:id="@+id/preference"
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
