@@ -35,4 +35,10 @@
         app:iconSpaceReserved="false"
         />
 
+    <Preference
+        android:title="@string/pref_header_notifications"
+        android:key="notification"
+        app:iconSpaceReserved="false"
+        />
+
 </PreferenceScreen>

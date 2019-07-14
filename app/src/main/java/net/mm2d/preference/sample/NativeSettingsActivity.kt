@@ -42,7 +42,13 @@ class NativeSettingsActivity : AppCompatPreferenceActivity() {
             addPreferencesFromResource(R.xml.native_pref_general)
             setHasOptionsMenu(true)
             bindPreferenceSummaryToValue(findPreference("example_text"))
-            bindPreferenceSummaryToValue(findPreference("example_list"))
+            findPreference("notification")?.setOnPreferenceClickListener {
+                (activity as NativeSettingsActivity).startWithFragment(
+                    NotificationPreferenceFragment::class.java.name,
+                    null, null, 0
+                )
+                true
+            }
         }
     }
 

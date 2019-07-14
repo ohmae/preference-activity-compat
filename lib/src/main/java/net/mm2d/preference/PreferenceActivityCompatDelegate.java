@@ -8,6 +8,7 @@
 package net.mm2d.preference;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,6 +37,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle.State;
 import androidx.preference.Preference;
 
+import static net.mm2d.preference.PreferenceActivityCompat.*;
+
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
@@ -44,6 +47,8 @@ class PreferenceActivityCompatDelegate {
         void onBuildHeaders(@NonNull List<Header> target);
 
         boolean onIsMultiPane();
+
+        boolean onIsHidingHeaders();
 
         boolean isValidFragment(@Nullable String fragmentName);
     }
@@ -111,6 +116,11 @@ class PreferenceActivityCompatDelegate {
     }
 
     @NonNull
+    private Intent getIntent() {
+        return mActivity.getIntent();
+    }
+
+    @NonNull
     private Resources getResources() {
         return mActivity.getResources();
     }
@@ -154,13 +164,18 @@ class PreferenceActivityCompatDelegate {
         mListFooter = findViewById(R.id.list_footer);
         mPrefsContainer = findViewById(R.id.prefs_frame);
         mHeadersContainer = findViewById(R.id.headers);
-        mSinglePane = !mConnector.onIsMultiPane();
+
+        mSinglePane = mConnector.onIsHidingHeaders() || !mConnector.onIsMultiPane();
         final View breadCrumbSection = findViewById(R.id.breadcrumb_section);
         mBreadCrumbTitle = findViewById(R.id.bread_crumb_title);
         if (mSinglePane && breadCrumbSection != null && mBreadCrumbTitle != null) {
             mBreadCrumbTitle.setVisibility(View.GONE);
             breadCrumbSection.setVisibility(View.GONE);
         }
+
+        final String initialFragment = getIntent().getStringExtra(EXTRA_SHOW_FRAGMENT);
+        final Bundle initialArguments = getIntent().getBundleExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS);
+
         if (savedInstanceState != null) {
             final ArrayList<Header> headers = savedInstanceState.getParcelableArrayList(HEADERS_TAG);
             if (headers != null) {
@@ -176,8 +191,12 @@ class PreferenceActivityCompatDelegate {
                 showBreadCrumbs(getTitle());
             }
         } else {
-            mConnector.onBuildHeaders(mHeaders);
-            if (!mSinglePane && mHeaders.size() > 0) {
+            if (initialFragment == null || !mConnector.onIsHidingHeaders()) {
+                mConnector.onBuildHeaders(mHeaders);
+            }
+            if (initialFragment != null) {
+                switchToHeader(initialFragment, initialArguments);
+            } else if (!mSinglePane && mHeaders.size() > 0) {
                 switchToHeader(onGetInitialHeader());
             }
         }
@@ -187,8 +206,14 @@ class PreferenceActivityCompatDelegate {
                 mList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
             }
         }
+
+        int initialTitle = getIntent().getIntExtra(EXTRA_SHOW_FRAGMENT_TITLE, 0);
+        if (mSinglePane && initialFragment != null && initialTitle != 0) {
+            showBreadCrumbs(mActivity.getText(initialTitle));
+        }
+
         if (mSinglePane) {
-            if (mCurrentHeader != null) {
+            if (mCurrentHeader != null || initialFragment != null) {
                 mHeadersContainer.setVisibility(View.GONE);
             } else {
                 mPrefsContainer.setVisibility(View.GONE);
@@ -260,6 +285,10 @@ class PreferenceActivityCompatDelegate {
         return mHeaders;
     }
 
+    boolean onIsHidingHeaders() {
+        return getIntent().getBooleanExtra(EXTRA_NO_HEADERS, false);
+    }
+
     boolean isMultiPane() {
         return !mSinglePane;
     }
@@ -309,6 +338,22 @@ class PreferenceActivityCompatDelegate {
         } else if (header.intent != null) {
             getContext().startActivity(header.intent);
         }
+    }
+
+    void switchToHeader(
+            @NonNull final String fragmentName,
+            @Nullable final Bundle args) {
+        Header selectedHeader = null;
+        for (final Header header : mHeaders) {
+            if (fragmentName.equals(header.fragment)) {
+                selectedHeader = header;
+                break;
+            }
+        }
+        if (selectedHeader != null) {
+            setSelectedHeader(selectedHeader);
+        }
+        switchToHeaderInner(fragmentName, args);
     }
 
     void switchToHeader(@NonNull final Header header) {

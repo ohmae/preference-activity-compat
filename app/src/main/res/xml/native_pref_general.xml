@@ -28,4 +28,9 @@
         android:title="@string/pref_title_add_friends_to_messages"
         />
 
+    <Preference
+        android:title="@string/pref_header_notifications"
+        android:key="notification"
+        />
+
 </PreferenceScreen>

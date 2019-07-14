@@ -48,7 +48,13 @@ class SettingsActivity : PreferenceActivityCompat() {
             addPreferencesFromResource(R.xml.pref_general)
             setHasOptionsMenu(true)
             bindPreferenceSummaryToValue(findPreference("example_text")!!)
-            bindPreferenceSummaryToValue(findPreference("example_list")!!)
+            findPreference("notification")?.setOnPreferenceClickListener {
+                (activity as SettingsActivity).startWithFragment(
+                    NotificationPreferenceFragment::class.java.name,
+                    null, null, 0
+                )
+                true
+            }
         }
     }
 

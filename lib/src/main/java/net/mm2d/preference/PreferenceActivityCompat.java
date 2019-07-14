@@ -8,6 +8,7 @@
 package net.mm2d.preference;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.View;
@@ -16,8 +17,10 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.annotation.XmlRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -28,6 +31,14 @@ import androidx.preference.PreferenceFragmentCompat;
 public class PreferenceActivityCompat extends AppCompatActivity implements
         PreferenceActivityCompatDelegate.Connector,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+
+    public static final String EXTRA_SHOW_FRAGMENT = ":android:show_fragment";
+    public static final String EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":android:show_fragment_args";
+    public static final String EXTRA_SHOW_FRAGMENT_TITLE = ":android:show_fragment_title";
+    public static final String EXTRA_SHOW_FRAGMENT_SHORT_TITLE
+            = ":android:show_fragment_short_title";
+    public static final String EXTRA_NO_HEADERS = ":android:no_headers";
+
     private PreferenceActivityCompatDelegate mDelegate;
 
     @SuppressLint("RestrictedApi")
@@ -67,6 +78,11 @@ public class PreferenceActivityCompat extends AppCompatActivity implements
     @Override
     public boolean onIsMultiPane() {
         return getResources().getBoolean(R.bool.mm2d_pac_dual_pane);
+    }
+
+    @Override
+    public boolean onIsHidingHeaders() {
+        return mDelegate.onIsHidingHeaders();
     }
 
     @Override
@@ -117,6 +133,12 @@ public class PreferenceActivityCompat extends AppCompatActivity implements
         mDelegate.setListFooter(view);
     }
 
+    public void switchToHeader(
+            @NonNull final String fragmentName,
+            @Nullable final Bundle args) {
+        mDelegate.switchToHeader(fragmentName, args);
+    }
+
     public void switchToHeader(@NonNull final Header header) {
         mDelegate.switchToHeader(header);
     }
@@ -127,5 +149,45 @@ public class PreferenceActivityCompat extends AppCompatActivity implements
             @NonNull final Preference pref) {
         mDelegate.startPreferenceFragment(pref);
         return true;
+    }
+
+    public Intent onBuildStartFragmentIntent(
+            @NonNull final String fragmentName,
+            @Nullable final Bundle args,
+            @StringRes final int titleRes,
+            @StringRes final int shortTitleRes
+    ) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setClass(this, getClass());
+        intent.putExtra(EXTRA_SHOW_FRAGMENT, fragmentName);
+        intent.putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, args);
+        intent.putExtra(EXTRA_SHOW_FRAGMENT_TITLE, titleRes);
+        intent.putExtra(EXTRA_SHOW_FRAGMENT_SHORT_TITLE, shortTitleRes);
+        intent.putExtra(EXTRA_NO_HEADERS, true);
+        return intent;
+    }
+
+    public void startWithFragment(
+            @NonNull final String fragmentName,
+            @Nullable final Bundle args,
+            @Nullable final Fragment resultTo,
+            final int resultRequestCode
+    ) {
+        startWithFragment(fragmentName, args, resultTo, resultRequestCode, 0, 0);
+    }
+
+    public void startWithFragment(
+            @NonNull final String fragmentName,
+            @Nullable final Bundle args,
+            @Nullable final Fragment resultTo,
+            final int resultRequestCode,
+            @StringRes final int titleRes,
+            @StringRes final int shortTitleRes) {
+        Intent intent = onBuildStartFragmentIntent(fragmentName, args, titleRes, shortTitleRes);
+        if (resultTo == null) {
+            startActivity(intent);
+        } else {
+            resultTo.startActivityForResult(intent, resultRequestCode);
+        }
     }
 }
