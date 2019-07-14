@@ -78,7 +78,7 @@ repositories {
     jcenter()
 }
 dependencies {
-    implementation 'net.mm2d:preference:0.1.0'
+    implementation 'net.mm2d:preference:0.1.3'
 }
 ```
 
