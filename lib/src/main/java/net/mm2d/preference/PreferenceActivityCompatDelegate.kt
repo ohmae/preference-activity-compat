@@ -211,7 +211,7 @@ internal class PreferenceActivityCompatDelegate(
 
     fun loadHeadersFromResource(
         @XmlRes resId: Int,
-        target: List<Header>
+        target: MutableList<Header>
     ) {
         HeaderLoader.loadFromResource(context, resId, target)
     }
@@ -365,7 +365,7 @@ internal class PreferenceActivityCompatDelegate(
     }
 
     companion object {
-        const val HEADER_ID_UNDEFINED: Long = -1
+        const val HEADER_ID_UNDEFINED = -1
         private const val HEADERS_TAG = ":android:headers"
         private const val CUR_HEADER_TAG = ":android:cur_header"
         private const val BACK_STACK_PREFS = ":android:prefs"

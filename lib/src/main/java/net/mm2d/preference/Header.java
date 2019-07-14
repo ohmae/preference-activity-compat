@@ -20,7 +20,7 @@ import androidx.annotation.StringRes;
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 public final class Header implements Parcelable {
-    public long id = PreferenceActivityCompatDelegate.HEADER_ID_UNDEFINED;
+    public int id = PreferenceActivityCompatDelegate.HEADER_ID_UNDEFINED;
     @StringRes
     public int titleRes;
     public CharSequence title;
@@ -69,7 +69,7 @@ public final class Header implements Parcelable {
     public void writeToParcel(
             final Parcel dest,
             final int flags) {
-        dest.writeLong(id);
+        dest.writeInt(id);
         dest.writeInt(titleRes);
         TextUtils.writeToParcel(title, dest, flags);
         dest.writeInt(summaryRes);
@@ -89,7 +89,7 @@ public final class Header implements Parcelable {
     }
 
     private void readFromParcel(final Parcel in) {
-        id = in.readLong();
+        id = in.readInt();
         titleRes = in.readInt();
         title = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
         summaryRes = in.readInt();
