@@ -24,7 +24,7 @@ class SettingsActivity : PreferenceActivityCompat() {
         return size >= Configuration.SCREENLAYOUT_SIZE_LARGE
     }
 
-    override fun onBuildHeaders(target: List<Header>) {
+    override fun onBuildHeaders(target: MutableList<Header>) {
         loadHeadersFromResource(R.xml.pref_headers, target)
     }
 

@@ -27,7 +27,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle.State
 import androidx.preference.Preference
-import net.mm2d.preference.PreferenceActivityCompat.*
+import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_NO_HEADERS
+import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_SHOW_FRAGMENT
+import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_SHOW_FRAGMENT_ARGUMENTS
+import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_SHOW_FRAGMENT_TITLE
 import java.util.*
 
 /**
@@ -111,8 +114,7 @@ internal class PreferenceActivityCompatDelegate(
         if (savedInstanceState != null) {
             savedInstanceState.getParcelableArrayList<Header>(HEADERS_TAG)?.let { savedHeaders ->
                 _headers.addAll(savedHeaders)
-                val headerIndex =
-                    savedInstanceState.getInt(CUR_HEADER_TAG, HEADER_ID_UNDEFINED.toInt())
+                val headerIndex = savedInstanceState.getInt(CUR_HEADER_TAG, HEADER_ID_UNDEFINED)
                 if (headerIndex >= 0 && headerIndex < _headers.size) {
                     setSelectedHeader(_headers[headerIndex])
                 } else if (!singlePane) {
@@ -156,8 +158,8 @@ internal class PreferenceActivityCompatDelegate(
             } else {
                 prefsContainer.visibility = View.GONE
             }
-        } else if (_headers.size > 0 && currentHeader != null) {
-            setSelectedHeader(currentHeader!!)
+        } else if (_headers.size > 0) {
+            currentHeader?.let { setSelectedHeader(it) }
         }
     }
 
@@ -248,10 +250,10 @@ internal class PreferenceActivityCompatDelegate(
         if (currentHeader == header) {
             fragmentManager.popBackStack(BACK_STACK_PREFS, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         } else {
-            header.fragment
+            val fragmentName = header.fragment
                 ?: throw IllegalStateException("can't switch to header that has no fragment")
             handler.post {
-                switchToHeaderInner(header.fragment, header.fragmentArguments)
+                switchToHeaderInner(fragmentName, header.fragmentArguments)
                 setSelectedHeader(header)
             }
         }
@@ -355,7 +357,7 @@ internal class PreferenceActivityCompatDelegate(
     }
 
     interface Connector {
-        fun onBuildHeaders(target: List<Header>)
+        fun onBuildHeaders(target: MutableList<Header>)
 
         fun onIsMultiPane(): Boolean
 

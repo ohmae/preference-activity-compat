@@ -7,6 +7,7 @@
 
 package net.mm2d.preference
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.XmlResourceParser
@@ -70,6 +71,7 @@ internal object HeaderLoader {
         }
     }
 
+    @SuppressLint("Recycle")
     @Throws(IOException::class, XmlPullParserException::class)
     private fun parseHeaderSection(
         context: Context,

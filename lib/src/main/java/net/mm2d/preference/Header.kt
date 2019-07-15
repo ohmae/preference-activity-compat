@@ -24,13 +24,13 @@ class Header : Parcelable {
     var id = HEADER_ID_UNDEFINED
     @StringRes
     var titleRes: Int = 0
-    var title: CharSequence = ""
+    var title: CharSequence? = null
     @StringRes
     var summaryRes: Int = 0
-    var summary: CharSequence = ""
+    var summary: CharSequence? = null
     @StringRes
     var breadCrumbTitleRes: Int = 0
-    var breadCrumbTitle: CharSequence = ""
+    var breadCrumbTitle: CharSequence? = null
     var iconRes: Int = 0
     var fragment: String? = null
     var fragmentArguments: Bundle? = null
@@ -43,11 +43,16 @@ class Header : Parcelable {
         readFromParcel(parcel)
     }
 
-    fun getTitle(res: Resources): CharSequence = getText(res, titleRes, title)
-    fun getSummary(res: Resources): CharSequence = getText(res, summaryRes, summary)
-    fun getBreadCrumbTitle(res: Resources): CharSequence =
+    fun getTitle(res: Resources): CharSequence? =
+        getText(res, titleRes, title)
+
+    fun getSummary(res: Resources): CharSequence? =
+        getText(res, summaryRes, summary)
+
+    fun getBreadCrumbTitle(res: Resources): CharSequence? =
         getText(res, breadCrumbTitleRes, breadCrumbTitle)
-    private fun getText(res: Resources, resId: Int, text: CharSequence): CharSequence =
+
+    private fun getText(res: Resources, resId: Int, text: CharSequence?): CharSequence? =
         if (resId != 0) res.getText(resId) else text
 
     override fun describeContents(): Int = 0
