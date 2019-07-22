@@ -165,6 +165,15 @@ If you override `onMenuItemSelected`, replace it with `onOptionsItemSelected`.
     }
 ```
 
+If you use Kotlin.
+`onBuildHeaders` argument type must be `MutableList`.
+Because `PreferenceActivityCompat` is implemented by Kotlin.
+
+```kotlin
+-    override fun onBuildHeaders(target: List<Header>)
++    override fun onBuildHeaders(target: MutableList<Header>)
+```
+
 ### 3. Replace `PreferenceFragment` to `PreferenceFragmentCompat`
 
 And implement `onCreatePreferences` instead of `onCreate`
