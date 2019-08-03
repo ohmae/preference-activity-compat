@@ -179,6 +179,7 @@ internal class PreferenceActivityCompatDelegate(
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun onRestoreInstanceState(state: Bundle) {
         if (singlePane) return
         currentHeader?.let { setSelectedHeader(it) }

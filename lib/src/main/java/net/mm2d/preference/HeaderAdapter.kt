@@ -98,6 +98,7 @@ internal class HeaderAdapter(
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
             view.background = drawable
         } else {
+            @Suppress("DEPRECATION")
             view.setBackgroundDrawable(drawable)
         }
     }
