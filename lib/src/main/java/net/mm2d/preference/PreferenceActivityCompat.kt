@@ -29,13 +29,13 @@ open class PreferenceActivityCompat : AppCompatActivity(),
 
     private lateinit var delegate: PreferenceActivityCompatDelegate
 
-    val selectedItemPosition: Int
+    open val selectedItemPosition: Int
         get() = delegate.selectedItemPosition
 
-    val headers: List<Header>
+    open val headers: List<Header>
         get() = delegate.headers
 
-    val isMultiPane: Boolean
+    open val isMultiPane: Boolean
         get() = delegate.isMultiPane
 
     @SuppressLint("RestrictedApi")
@@ -77,40 +77,34 @@ open class PreferenceActivityCompat : AppCompatActivity(),
         return if (applicationInfo.targetSdkVersion >= VERSION_CODES.KITKAT) {
             throw RuntimeException(
                 "Subclasses of PreferenceActivity must override isValidFragment(String)"
-                        + " to verify that the Fragment class is valid! "
-                        + javaClass.name
-                        + " has not checked if fragment " + fragmentName + " is valid."
+                    + " to verify that the Fragment class is valid! "
+                    + javaClass.name
+                    + " has not checked if fragment " + fragmentName + " is valid."
             )
         } else {
             true
         }
     }
 
-    fun hasHeaders(): Boolean = delegate.hasHeaders()
+    open fun hasHeaders(): Boolean = delegate.hasHeaders()
 
-    fun invalidateHeaders() {
+    open fun invalidateHeaders() {
         delegate.invalidateHeaders()
     }
 
-    fun loadHeadersFromResource(
-        @XmlRes resId: Int,
-        target: MutableList<Header>
-    ) {
+    open fun loadHeadersFromResource(@XmlRes resId: Int, target: MutableList<Header>) {
         delegate.loadHeadersFromResource(resId, target)
     }
 
-    fun setListFooter(view: View) {
+    open fun setListFooter(view: View) {
         delegate.setListFooter(view)
     }
 
-    fun switchToHeader(
-        fragmentName: String,
-        args: Bundle?
-    ) {
+    open fun switchToHeader(fragmentName: String, args: Bundle?) {
         delegate.switchToHeader(fragmentName, args)
     }
 
-    fun switchToHeader(header: Header) {
+    open fun switchToHeader(header: Header) {
         delegate.switchToHeader(header)
     }
 
@@ -122,24 +116,22 @@ open class PreferenceActivityCompat : AppCompatActivity(),
         return true
     }
 
-    fun onBuildStartFragmentIntent(
+    open fun onBuildStartFragmentIntent(
         fragmentName: String,
         arguments: Bundle?,
         @StringRes titleRes: Int,
         @StringRes shortTitleRes: Int
-    ): Intent {
-        return Intent(Intent.ACTION_MAIN).also {
-            it.setClass(this, javaClass)
-            it.putExtra(EXTRA_SHOW_FRAGMENT, fragmentName)
-            it.putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, arguments)
-            it.putExtra(EXTRA_SHOW_FRAGMENT_TITLE, titleRes)
-            it.putExtra(EXTRA_SHOW_FRAGMENT_SHORT_TITLE, shortTitleRes)
-            it.putExtra(EXTRA_NO_HEADERS, true)
-        }
+    ): Intent = Intent(Intent.ACTION_MAIN).also {
+        it.setClass(this, javaClass)
+        it.putExtra(EXTRA_SHOW_FRAGMENT, fragmentName)
+        it.putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, arguments)
+        it.putExtra(EXTRA_SHOW_FRAGMENT_TITLE, titleRes)
+        it.putExtra(EXTRA_SHOW_FRAGMENT_SHORT_TITLE, shortTitleRes)
+        it.putExtra(EXTRA_NO_HEADERS, true)
     }
 
     @JvmOverloads
-    fun startWithFragment(
+    open fun startWithFragment(
         fragmentName: String,
         arguments: Bundle?,
         resultTo: Fragment?,

@@ -65,13 +65,12 @@ internal class HeaderAdapter(
             holder = view.tag as ViewHolder
         }
 
-        val icon = holder.icon
         val header = getItem(position) ?: return view
         if (header.iconRes == 0) {
-            icon.visibility = View.GONE
+            holder.icon.visibility = View.GONE
         } else {
-            icon.visibility = View.VISIBLE
-            icon.setImageResource(header.iconRes)
+            holder.icon.visibility = View.VISIBLE
+            holder.icon.setImageResource(header.iconRes)
         }
         val resources = context.resources
         holder.title.text = header.getTitle(resources)
@@ -89,7 +88,10 @@ internal class HeaderAdapter(
     private fun setBackground(view: View) {
         if (colorAccent == 0) return
         val drawable = StateListDrawable().also {
-            it.addState(intArrayOf(android.R.attr.state_activated), ColorDrawable(colorAccent))
+            it.addState(
+                intArrayOf(android.R.attr.state_activated),
+                ColorDrawable(colorAccent)
+            )
             it.addState(
                 intArrayOf(-android.R.attr.state_activated),
                 ColorDrawable(Color.TRANSPARENT)

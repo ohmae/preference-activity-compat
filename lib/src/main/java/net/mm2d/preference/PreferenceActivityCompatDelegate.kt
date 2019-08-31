@@ -265,9 +265,7 @@ internal class PreferenceActivityCompatDelegate(
         fragmentArguments: Bundle?
     ) {
         fragmentManager.popBackStack(BACK_STACK_PREFS, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        if (!connector.isValidFragment(fragmentName)) {
-            throw IllegalArgumentException("Invalid fragment for this activity: $fragmentName")
-        }
+        require(connector.isValidFragment(fragmentName)) { "Invalid fragment for this activity: $fragmentName" }
         fragment = Fragment.instantiate(context, fragmentName, fragmentArguments)
         fragmentManager.beginTransaction()
             .setTransition(FragmentTransaction.TRANSIT_NONE)
@@ -321,7 +319,7 @@ internal class PreferenceActivityCompatDelegate(
         current: Header,
         from: ArrayList<Header>
     ): Header? {
-        val matches = ArrayList<Header>()
+        val matches = mutableListOf<Header>()
         from.forEach { oh ->
             if (current == oh || current.id != HEADER_ID_UNDEFINED && current.id == oh.id) {
                 return oh

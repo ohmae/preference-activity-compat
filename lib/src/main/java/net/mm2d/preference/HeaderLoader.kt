@@ -31,12 +31,8 @@ internal object HeaderLoader {
         @XmlRes resId: Int,
         target: MutableList<Header>
     ) {
-        var parser: XmlResourceParser? = null
-        try {
-            parser = context.resources.getXml(resId)
-            loadFromResource(context, parser, target)
-        } finally {
-            parser?.close()
+        context.resources.getXml(resId).use {
+            loadFromResource(context, it, target)
         }
     }
 
@@ -51,7 +47,7 @@ internal object HeaderLoader {
         if ("preference-headers" != parser.name) {
             throw RuntimeException(
                 "XML document must start with <preference-headers> tag; found"
-                        + parser.name + " at " + parser.positionDescription
+                    + parser.name + " at " + parser.positionDescription
             )
         }
         val startDepth = parser.depth
@@ -92,9 +88,7 @@ internal object HeaderLoader {
     }
 
     private fun Header.setTitle(tv: TypedValue?) {
-        if (tv?.type != TypedValue.TYPE_STRING) {
-            return
-        }
+        if (tv?.type != TypedValue.TYPE_STRING) return
         if (tv.resourceId != 0) {
             titleRes = tv.resourceId
         } else {
@@ -103,9 +97,7 @@ internal object HeaderLoader {
     }
 
     private fun Header.setSummary(tv: TypedValue?) {
-        if (tv?.type != TypedValue.TYPE_STRING) {
-            return
-        }
+        if (tv?.type != TypedValue.TYPE_STRING) return
         if (tv.resourceId != 0) {
             summaryRes = tv.resourceId
         } else {
@@ -114,9 +106,7 @@ internal object HeaderLoader {
     }
 
     private fun Header.setBreadCrumbTitle(tv: TypedValue?) {
-        if (tv?.type != TypedValue.TYPE_STRING) {
-            return
-        }
+        if (tv?.type != TypedValue.TYPE_STRING) return
         if (tv.resourceId != 0) {
             breadCrumbTitleRes = tv.resourceId
         } else {

@@ -60,37 +60,30 @@ class Header : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeInt(titleRes)
-        TextUtils.writeToParcel(title, parcel, flags)
+        parcel.writeCharSequence(title, flags)
         parcel.writeInt(summaryRes)
-        TextUtils.writeToParcel(summary, parcel, flags)
+        parcel.writeCharSequence(summary, flags)
         parcel.writeInt(breadCrumbTitleRes)
-        TextUtils.writeToParcel(breadCrumbTitle, parcel, flags)
+        parcel.writeCharSequence(breadCrumbTitle, flags)
         parcel.writeInt(iconRes)
         parcel.writeString(fragment)
         parcel.writeBundle(fragmentArguments)
-        intent?.let {
-            parcel.writeInt(1)
-            it.writeToParcel(parcel, flags)
-        } ?: run {
-            parcel.writeInt(0)
-        }
+        parcel.writeIntent(intent, flags)
         parcel.writeBundle(extras)
     }
 
     private fun readFromParcel(parcel: Parcel) {
         id = parcel.readInt()
         titleRes = parcel.readInt()
-        title = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(parcel)
+        title = parcel.readCharSequence()
         summaryRes = parcel.readInt()
-        summary = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(parcel)
+        summary = parcel.readCharSequence()
         breadCrumbTitleRes = parcel.readInt()
-        breadCrumbTitle = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(parcel)
+        breadCrumbTitle = parcel.readCharSequence()
         iconRes = parcel.readInt()
         fragment = parcel.readString()
         fragmentArguments = parcel.readBundle(javaClass.classLoader)
-        if (parcel.readInt() != 0) {
-            intent = Intent.CREATOR.createFromParcel(parcel)
-        }
+        intent = parcel.readIntent()
         extras = parcel.readBundle(javaClass.classLoader)
     }
 
@@ -102,5 +95,20 @@ class Header : Parcelable {
         override fun newArray(size: Int): Array<Header?> {
             return arrayOfNulls(size)
         }
+
+        private fun Parcel.writeCharSequence(cs: CharSequence?, flags: Int): Unit =
+            TextUtils.writeToParcel(cs, this, flags)
+
+        private fun Parcel.readCharSequence(): CharSequence? =
+            TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(this)
+
+        private fun Parcel.writeIntent(intent: Intent?, flags: Int): Unit = intent?.let {
+            writeInt(1)
+            it.writeToParcel(this, flags)
+        } ?: run { writeInt(0) }
+
+        private fun Parcel.readIntent(): Intent? =
+            if (readInt() != 0) Intent.CREATOR.createFromParcel(this)
+            else null
     }
 }
