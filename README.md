@@ -272,6 +272,7 @@ If your target is Android 5 or later, you do not have to replace it.
 
 ### PreferenceActivityCompat
 
+- [Kotlin](https://kotlinlang.org/)
 - [Android Jetpack](https://developer.android.com/jetpack/)
   - androidx.appcompat:appcompat
   - androidx.preference:preference
