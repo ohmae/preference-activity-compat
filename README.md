@@ -78,7 +78,7 @@ repositories {
     jcenter()
 }
 dependencies {
-    implementation 'net.mm2d:preference:0.1.3'
+    implementation 'net.mm2d:preference:0.2.1'
 }
 ```
 
@@ -276,6 +276,7 @@ If your target is Android 5 or later, you do not have to replace it.
 - [Android Jetpack](https://developer.android.com/jetpack/)
   - androidx.appcompat:appcompat
   - androidx.preference:preference
+  - androidx.core:core-ktx
 
 ### Sample app
 
