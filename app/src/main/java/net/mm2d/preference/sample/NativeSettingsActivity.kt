@@ -6,6 +6,7 @@ import android.preference.*
 import android.preference.Preference.OnPreferenceChangeListener
 import android.view.MenuItem
 
+@Suppress("DEPRECATION")
 class NativeSettingsActivity : AppCompatPreferenceActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

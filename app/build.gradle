@@ -30,8 +30,8 @@ android {
 dependencies {
     api project(":lib")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:1.0.2"
-    implementation "androidx.preference:preference:1.0.0"
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.preference:preference:1.1.0"
     testImplementation "junit:junit:4.12"
 }
 

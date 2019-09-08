@@ -43,6 +43,7 @@ internal object HeaderLoader {
         target: MutableList<Header>
     ) {
         val attrs = Xml.asAttributeSet(parser)
+        @Suppress("ControlFlowWithEmptyBody")
         while (parser.next().let { it != XmlPullParser.END_DOCUMENT && it != XmlPullParser.START_TAG });
         if ("preference-headers" != parser.name) {
             throw RuntimeException(
@@ -148,6 +149,7 @@ internal object HeaderLoader {
     @Throws(IOException::class, XmlPullParserException::class)
     private fun skipCurrentTag(parser: XmlPullParser) {
         val startDepth = parser.depth
+        @Suppress("ControlFlowWithEmptyBody")
         while (!reachToEnd(parser.next(), parser.depth, startDepth));
     }
 

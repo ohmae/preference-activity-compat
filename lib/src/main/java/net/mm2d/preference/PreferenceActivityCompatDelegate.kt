@@ -266,7 +266,7 @@ internal class PreferenceActivityCompatDelegate(
     ) {
         fragmentManager.popBackStack(BACK_STACK_PREFS, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         require(connector.isValidFragment(fragmentName)) { "Invalid fragment for this activity: $fragmentName" }
-        fragment = Fragment.instantiate(context, fragmentName, fragmentArguments)
+        fragment = instantiateFragment(fragmentName, fragmentArguments)
         fragmentManager.beginTransaction()
             .setTransition(FragmentTransaction.TRANSIT_NONE)
             .replace(R.id.preference, fragment!!)
@@ -276,6 +276,20 @@ internal class PreferenceActivityCompatDelegate(
             prefsContainer.visibility = View.VISIBLE
             headersContainer.visibility = View.GONE
         }
+    }
+
+    private fun instantiateFragment(
+        fragmentName: String,
+        fragmentArguments: Bundle?
+    ): Fragment {
+        val fragment = fragmentManager
+            .fragmentFactory
+            .instantiate(context.classLoader, fragmentName)
+        fragmentArguments?.let {
+            it.classLoader = fragment::class.java.classLoader
+            fragment.arguments = it
+        }
+        return fragment
     }
 
     private fun setSelectedHeader(header: Header) {
@@ -306,7 +320,7 @@ internal class PreferenceActivityCompatDelegate(
     }
 
     fun startPreferenceFragment(preference: Preference) {
-        val fragment = Fragment.instantiate(context, preference.fragment, preference.extras)
+        val fragment = instantiateFragment(preference.fragment, preference.extras)
         fragmentManager.beginTransaction()
             .replace(R.id.preference, fragment)
             .setBreadCrumbTitle(preference.title)
