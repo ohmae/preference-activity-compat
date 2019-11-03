@@ -78,7 +78,7 @@ repositories {
     jcenter()
 }
 dependencies {
-    implementation 'net.mm2d:preference:0.2.1'
+    implementation 'net.mm2d:preference:0.2.2'
 }
 ```
 
@@ -123,7 +123,7 @@ Please see the next section.
 
 ## Migrate from AppCompatPreferenceActivity
 
-### 1. Add `preferenceTheme` in `PreferenceActivity`'s theme. (**important!**)
+### 1. Add `preferenceTheme` in `PreferenceActivity`'s theme.
 ```xml
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
