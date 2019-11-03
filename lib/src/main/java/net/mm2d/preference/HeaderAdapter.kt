@@ -29,7 +29,7 @@ internal class HeaderAdapter(
     context: Context,
     objects: List<Header>
 ) : ArrayAdapter<Header>(context, 0, objects) {
-    private val mInflater: LayoutInflater = LayoutInflater.from(context)
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val colorAccent: Int = getColorAccent(context)
 
     @SuppressLint("RestrictedApi")
@@ -52,7 +52,7 @@ internal class HeaderAdapter(
         val view: View
 
         if (convertView == null) {
-            view = mInflater.inflate(R.layout.mm2d_pac_header_item, parent, false)
+            view = inflater.inflate(R.layout.mm2d_pac_header_item, parent, false)
             setBackground(view)
             holder = ViewHolder(
                 view.findViewById(R.id.icon),

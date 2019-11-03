@@ -88,13 +88,11 @@ class Header : Parcelable {
     }
 
     companion object CREATOR : Parcelable.Creator<Header> {
-        override fun createFromParcel(source: Parcel): Header {
-            return Header(source)
-        }
+        override fun createFromParcel(source: Parcel): Header =
+            Header(source)
 
-        override fun newArray(size: Int): Array<Header?> {
-            return arrayOfNulls(size)
-        }
+        override fun newArray(size: Int): Array<Header?> =
+            arrayOfNulls(size)
 
         private fun Parcel.writeCharSequence(cs: CharSequence?, flags: Int): Unit =
             TextUtils.writeToParcel(cs, this, flags)

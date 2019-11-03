@@ -266,10 +266,11 @@ internal class PreferenceActivityCompatDelegate(
     ) {
         fragmentManager.popBackStack(BACK_STACK_PREFS, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         require(connector.isValidFragment(fragmentName)) { "Invalid fragment for this activity: $fragmentName" }
-        fragment = instantiateFragment(fragmentName, fragmentArguments)
+        val fragment = instantiateFragment(fragmentName, fragmentArguments)
+        this.fragment = fragment
         fragmentManager.beginTransaction()
             .setTransition(FragmentTransaction.TRANSIT_NONE)
-            .replace(R.id.preference, fragment!!)
+            .replace(R.id.preference, fragment)
             .commitAllowingStateLoss()
 
         if (singlePane && prefsContainer.visibility == View.GONE) {

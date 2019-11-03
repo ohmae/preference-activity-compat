@@ -71,10 +71,10 @@ open class PreferenceActivityCompat : AppCompatActivity(),
 
     override fun onIsHidingHeaders(): Boolean = delegate.onIsHidingHeaders()
 
-    override fun onBuildHeaders(target: MutableList<Header>) {}
+    override fun onBuildHeaders(target: MutableList<Header>) = Unit
 
-    override fun isValidFragment(fragmentName: String?): Boolean {
-        return if (applicationInfo.targetSdkVersion >= VERSION_CODES.KITKAT) {
+    override fun isValidFragment(fragmentName: String?): Boolean =
+        if (applicationInfo.targetSdkVersion >= VERSION_CODES.KITKAT) {
             throw RuntimeException(
                 "Subclasses of PreferenceActivity must override isValidFragment(String)"
                     + " to verify that the Fragment class is valid! "
@@ -84,7 +84,6 @@ open class PreferenceActivityCompat : AppCompatActivity(),
         } else {
             true
         }
-    }
 
     open fun hasHeaders(): Boolean = delegate.hasHeaders()
 
