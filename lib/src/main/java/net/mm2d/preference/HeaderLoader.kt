@@ -31,8 +31,12 @@ internal object HeaderLoader {
         @XmlRes resId: Int,
         target: MutableList<Header>
     ) {
-        context.resources.getXml(resId).use {
-            loadFromResource(context, it, target)
+        var parser: XmlResourceParser? = null
+        try {
+            parser = context.resources.getXml(resId)
+            loadFromResource(context, parser, target)
+        } finally {
+            parser?.close()
         }
     }
 
