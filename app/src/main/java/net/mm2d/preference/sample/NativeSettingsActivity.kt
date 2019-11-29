@@ -2,8 +2,11 @@ package net.mm2d.preference.sample
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.preference.*
+import android.preference.ListPreference
+import android.preference.Preference
 import android.preference.Preference.OnPreferenceChangeListener
+import android.preference.PreferenceFragment
+import android.preference.PreferenceManager
 import android.view.MenuItem
 
 @Suppress("DEPRECATION")
@@ -18,15 +21,15 @@ class NativeSettingsActivity : AppCompatPreferenceActivity() {
         return size >= Configuration.SCREENLAYOUT_SIZE_LARGE
     }
 
-    override fun onBuildHeaders(target: List<PreferenceActivity.Header>) {
+    override fun onBuildHeaders(target: List<Header>) {
         loadHeadersFromResource(R.xml.native_pref_headers, target)
     }
 
     override fun isValidFragment(fragmentName: String): Boolean {
         return (PreferenceFragment::class.java.name == fragmentName
-                || GeneralPreferenceFragment::class.java.name == fragmentName
-                || DataSyncPreferenceFragment::class.java.name == fragmentName
-                || NotificationPreferenceFragment::class.java.name == fragmentName)
+            || GeneralPreferenceFragment::class.java.name == fragmentName
+            || DataSyncPreferenceFragment::class.java.name == fragmentName
+            || NotificationPreferenceFragment::class.java.name == fragmentName)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -71,17 +74,16 @@ class NativeSettingsActivity : AppCompatPreferenceActivity() {
     }
 
     companion object {
-        private val sBindPreferenceSummaryToValueListener = object : OnPreferenceChangeListener {
-            override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
+        private val sBindPreferenceSummaryToValueListener =
+            OnPreferenceChangeListener { preference, newValue ->
                 if (preference is ListPreference) {
                     val index = preference.findIndexOfValue(newValue.toString())
                     preference.summary = if (index >= 0) preference.entries[index] else null
                 } else {
                     preference.summary = newValue.toString()
                 }
-                return true
+                true
             }
-        }
 
         private fun bindPreferenceSummaryToValue(preference: Preference) {
             preference.onPreferenceChangeListener = sBindPreferenceSummaryToValueListener

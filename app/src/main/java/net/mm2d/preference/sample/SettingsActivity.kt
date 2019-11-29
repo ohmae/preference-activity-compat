@@ -30,9 +30,9 @@ class SettingsActivity : PreferenceActivityCompat() {
 
     override fun isValidFragment(fragmentName: String?): Boolean {
         return (PreferenceFragmentCompat::class.java.name == fragmentName
-                || GeneralPreferenceFragment::class.java.name == fragmentName
-                || DataSyncPreferenceFragment::class.java.name == fragmentName
-                || NotificationPreferenceFragment::class.java.name == fragmentName)
+            || GeneralPreferenceFragment::class.java.name == fragmentName
+            || DataSyncPreferenceFragment::class.java.name == fragmentName
+            || NotificationPreferenceFragment::class.java.name == fragmentName)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
