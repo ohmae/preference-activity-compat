@@ -58,33 +58,37 @@ class Header : Parcelable {
     override fun describeContents(): Int = 0
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
-        parcel.writeInt(titleRes)
-        parcel.writeCharSequence(title, flags)
-        parcel.writeInt(summaryRes)
-        parcel.writeCharSequence(summary, flags)
-        parcel.writeInt(breadCrumbTitleRes)
-        parcel.writeCharSequence(breadCrumbTitle, flags)
-        parcel.writeInt(iconRes)
-        parcel.writeString(fragment)
-        parcel.writeBundle(fragmentArguments)
-        parcel.writeIntent(intent, flags)
-        parcel.writeBundle(extras)
+        parcel.also {
+            it.writeInt(id)
+            it.writeInt(titleRes)
+            it.writeCharSequence(title, flags)
+            it.writeInt(summaryRes)
+            it.writeCharSequence(summary, flags)
+            it.writeInt(breadCrumbTitleRes)
+            it.writeCharSequence(breadCrumbTitle, flags)
+            it.writeInt(iconRes)
+            it.writeString(fragment)
+            it.writeBundle(fragmentArguments)
+            it.writeIntent(intent, flags)
+            it.writeBundle(extras)
+        }
     }
 
     private fun readFromParcel(parcel: Parcel) {
-        id = parcel.readInt()
-        titleRes = parcel.readInt()
-        title = parcel.readCharSequence()
-        summaryRes = parcel.readInt()
-        summary = parcel.readCharSequence()
-        breadCrumbTitleRes = parcel.readInt()
-        breadCrumbTitle = parcel.readCharSequence()
-        iconRes = parcel.readInt()
-        fragment = parcel.readString()
-        fragmentArguments = parcel.readBundle(javaClass.classLoader)
-        intent = parcel.readIntent()
-        extras = parcel.readBundle(javaClass.classLoader)
+        parcel.let {
+            id = it.readInt()
+            titleRes = it.readInt()
+            title = it.readCharSequence()
+            summaryRes = it.readInt()
+            summary = it.readCharSequence()
+            breadCrumbTitleRes = it.readInt()
+            breadCrumbTitle = it.readCharSequence()
+            iconRes = it.readInt()
+            fragment = it.readString()
+            fragmentArguments = it.readBundle(javaClass.classLoader)
+            intent = it.readIntent()
+            extras = it.readBundle(javaClass.classLoader)
+        }
     }
 
     companion object CREATOR : Parcelable.Creator<Header> {
@@ -100,10 +104,14 @@ class Header : Parcelable {
         private fun Parcel.readCharSequence(): CharSequence? =
             TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(this)
 
-        private fun Parcel.writeIntent(intent: Intent?, flags: Int): Unit = intent?.let {
-            writeInt(1)
-            it.writeToParcel(this, flags)
-        } ?: run { writeInt(0) }
+        private fun Parcel.writeIntent(intent: Intent?, flags: Int) {
+            if (intent != null) {
+                writeInt(1)
+                intent.writeToParcel(this, flags)
+            } else {
+                writeInt(0)
+            }
+        }
 
         private fun Parcel.readIntent(): Intent? =
             if (readInt() != 0) Intent.CREATOR.createFromParcel(this)

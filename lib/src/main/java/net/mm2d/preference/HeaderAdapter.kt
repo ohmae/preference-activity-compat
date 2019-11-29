@@ -36,8 +36,8 @@ internal class HeaderAdapter(
     private fun getColorAccent(context: Context): Int {
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) return 0
         val a = TintTypedArray.obtainStyledAttributes(context, null, intArrayOf(R.attr.colorAccent))
-        try {
-            return a.getColor(0, 0)
+        return try {
+            a.getColor(0, 0)
         } finally {
             a.recycle()
         }

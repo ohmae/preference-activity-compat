@@ -161,7 +161,6 @@ internal object HeaderLoader {
         type: Int,
         currentDepth: Int,
         startDepth: Int
-    ): Boolean {
-        return type == XmlPullParser.END_DOCUMENT || type == XmlPullParser.END_TAG && currentDepth <= startDepth
-    }
+    ): Boolean = type == XmlPullParser.END_DOCUMENT ||
+        type == XmlPullParser.END_TAG && currentDepth <= startDepth
 }
