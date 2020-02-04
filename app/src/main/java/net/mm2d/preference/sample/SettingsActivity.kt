@@ -76,17 +76,16 @@ class SettingsActivity : PreferenceActivityCompat() {
     }
 
     companion object {
-        private val sBindPreferenceSummaryToValueListener = object : OnPreferenceChangeListener {
-            override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
+        private val sBindPreferenceSummaryToValueListener =
+            OnPreferenceChangeListener { preference, newValue ->
                 if (preference is ListPreference) {
                     val index = preference.findIndexOfValue(newValue.toString())
                     preference.summary = if (index >= 0) preference.entries[index] else null
                 } else {
                     preference.summary = newValue.toString()
                 }
-                return true
+                true
             }
-        }
 
         private fun bindPreferenceSummaryToValue(preference: Preference) {
             preference.onPreferenceChangeListener = sBindPreferenceSummaryToValueListener
