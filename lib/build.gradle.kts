@@ -1,13 +1,15 @@
 import build.*
 
-apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
-apply plugin: "maven"
-apply plugin: "maven-publish"
-apply plugin: "com.jfrog.bintray"
-apply plugin: "com.github.ben-manes.versions"
+plugins {
+    id("com.android.library")
+    id("kotlin-android")
+    maven
+    `maven-publish`
+    id("com.jfrog.bintray")
+    id("com.github.ben-manes.versions")
+}
 
-archivesBaseName = "preference"
+base.archivesBaseName = "preference"
 group = Properties.groupId
 version = Properties.versionName
 
@@ -19,7 +21,7 @@ android {
         targetSdkVersion(29)
         versionCode = Properties.versionCode
         versionName = Properties.versionName
-        consumerProguardFiles "proguard-rules.pro"
+        consumerProguardFile("proguard-rules.pro")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -37,4 +39,4 @@ dependencies {
     implementation("androidx.core:core-ktx:1.3.1")
 }
 
-apply from: "${rootDir}/common.gradle"
+commonSettings()
