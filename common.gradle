@@ -1,3 +1,5 @@
+import build.*
+
 apply plugin: "maven"
 apply plugin: "maven-publish"
 apply plugin: "com.jfrog.bintray"
@@ -17,11 +19,11 @@ uploadArchives {
         repository(url: "file:$buildDir/maven")
         pom.project {
             name = archivesBaseName
-            url = pj.siteUrl
+            url = Properties.Url.site
 
-            groupId = pj.groupId
+            groupId = Properties.groupId
             artifactId = archivesBaseName
-            version = pj.versions.name
+            version = Properties.versionName
             licenses {
                 license {
                     name = "The MIT License"
@@ -30,8 +32,8 @@ uploadArchives {
                 }
             }
             scm {
-                connection = pj.scmConnection
-                url = pj.githubUrl
+                connection = Properties.Url.scm
+                url = Properties.Url.github
             }
         }
     }
@@ -41,9 +43,9 @@ publishing {
     publications {
         bintray(MavenPublication) {
             artifact("$buildDir/outputs/aar/${archivesBaseName}-release.aar")
-            groupId = pj.groupId
+            groupId = Properties.groupId
             artifactId = archivesBaseName
-            version = pj.versions.name
+            version = Properties.versionName
 
             artifact sourcesJar
 
@@ -53,7 +55,7 @@ publishing {
                 def licenses = node.appendNode("licenses")
                 appendLicense(licenses, "The MIT License", "https://opensource.org/licenses/MIT", "repo")
 
-                appendScm(node, pj.scmConnection, pj.githubUrl)
+                appendScm(node, Properties.Url.scm, Properties.Url.github)
 
                 def dependencies = node.appendNode("dependencies")
                 configurations.api.dependencies.each {
@@ -93,14 +95,15 @@ bintray {
     key = project.hasProperty("bintray_key") ? bintray_key : ""
     publications = ["bintray"]
 
+    dryRun = true
+
     pkg {
         repo = "maven"
-        name = pj.groupId + "." + archivesBaseName
+        name = Properties.groupId + "." + archivesBaseName
         licenses = ["MIT"]
-        websiteUrl = pj.siteUrl
-        issueTrackerUrl = pj.githubUrl + "/blob/master/LICENSE"
-        vcsUrl = pj.githubUrl + ".git"
-        issueTrackerUrl = pj.githubUrl + "/issues"
+        websiteUrl = Properties.Url.site
+        vcsUrl = Properties.Url.github + ".git"
+        issueTrackerUrl = Properties.Url.github + "/issues"
         publicDownloadNumbers = true
         version {
             name = project.version
