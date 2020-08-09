@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Libraries.Kotlin.version}")
+    implementation(kotlin("stdlib"))
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.preference:preference:1.1.1")
     implementation("androidx.core:core-ktx:1.3.1")

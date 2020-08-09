@@ -1,4 +1,3 @@
-import build.Libraries
 import build.dependencyUpdates
 
 plugins {
@@ -33,7 +32,7 @@ android {
 
 dependencies {
     api(project(":lib"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Libraries.Kotlin.version}")
+    implementation(kotlin("stdlib"))
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.preference:preference:1.1.1")
     testImplementation("junit:junit:4.13")
