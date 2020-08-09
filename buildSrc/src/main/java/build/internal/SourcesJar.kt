@@ -20,7 +20,6 @@ internal fun Project.sourcesJarSettings() {
     tasks.create("sourcesJar", Jar::class) {
         archiveClassifier.set("sources")
         from(android.sourceSets["main"].java.srcDirs)
-        // from android.sourceSets.main.java.srcDirs
     }
 
     artifacts {

@@ -13,7 +13,6 @@
         />
 
     <EditTextPreference
-        android:capitalize="words"
         android:defaultValue="@string/pref_default_display_name"
         android:inputType="textCapWords"
         android:key="example_text"
