@@ -10,8 +10,8 @@ plugins {
 }
 
 base.archivesBaseName = "preference"
-group = Properties.groupId
-version = Properties.versionName
+group = ProjectProperties.groupId
+version = ProjectProperties.versionName
 
 android {
     compileSdkVersion(29)
@@ -19,8 +19,8 @@ android {
     defaultConfig {
         minSdkVersion(14)
         targetSdkVersion(29)
-        versionCode = Properties.versionCode
-        versionName = Properties.versionName
+        versionCode = ProjectProperties.versionCode
+        versionName = ProjectProperties.versionName
         consumerProguardFile("proguard-rules.pro")
     }
     compileOptions {

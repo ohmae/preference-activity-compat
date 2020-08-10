@@ -1,6 +1,6 @@
 package build.internal
 
-import build.Properties
+import build.ProjectProperties
 import org.gradle.api.Project
 import org.gradle.api.internal.HasConvention
 import org.gradle.api.plugins.BasePluginConvention
@@ -21,10 +21,10 @@ internal fun Project.uploadArchivesSettings() {
                 "pom" {
                     "project" {
                         setProperty("name", base.archivesBaseName)
-                        setProperty("url", Properties.Url.site)
-                        setProperty("groupId", Properties.groupId)
+                        setProperty("url", ProjectProperties.Url.site)
+                        setProperty("groupId", ProjectProperties.groupId)
                         setProperty("artifactId", base.archivesBaseName)
-                        setProperty("version", Properties.versionName)
+                        setProperty("version", ProjectProperties.versionName)
                         "licenses" {
                             "license" {
                                 setProperty("name", "The MIT License")
@@ -33,8 +33,8 @@ internal fun Project.uploadArchivesSettings() {
                             }
                         }
                         "scm" {
-                            setProperty("connection", Properties.Url.scm)
-                            setProperty("url", Properties.Url.github)
+                            setProperty("connection", ProjectProperties.Url.scm)
+                            setProperty("url", ProjectProperties.Url.github)
                         }
                     }
                 }
