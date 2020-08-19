@@ -105,9 +105,9 @@ internal class HeaderAdapter(
         }
     }
 
-    private class ViewHolder internal constructor(
-        internal val icon: ImageView,
-        internal val title: TextView,
-        internal val summary: TextView
+    private class ViewHolder(
+        val icon: ImageView,
+        val title: TextView,
+        val summary: TextView
     )
 }
