@@ -19,9 +19,6 @@ import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 @SuppressLint("Registered")
 open class PreferenceActivityCompat : AppCompatActivity(),
     PreferenceActivityCompatDelegate.Connector,

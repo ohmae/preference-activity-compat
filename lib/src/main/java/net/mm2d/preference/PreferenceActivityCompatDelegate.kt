@@ -33,9 +33,6 @@ import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_SHOW_FRAGMEN
 import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_SHOW_FRAGMENT_TITLE
 import java.util.*
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class PreferenceActivityCompatDelegate(
     private val activity: FragmentActivity,
     private val connector: Connector

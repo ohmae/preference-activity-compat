@@ -14,11 +14,11 @@ group = ProjectProperties.groupId
 version = ProjectProperties.versionName
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(30)
 
     defaultConfig {
         minSdkVersion(14)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
         versionCode = ProjectProperties.versionCode
         versionName = ProjectProperties.versionName
         consumerProguardFile("proguard-rules.pro")

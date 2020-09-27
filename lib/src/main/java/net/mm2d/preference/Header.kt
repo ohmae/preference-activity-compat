@@ -17,9 +17,6 @@ import android.text.TextUtils
 import androidx.annotation.StringRes
 import net.mm2d.preference.PreferenceActivityCompatDelegate.Companion.HEADER_ID_UNDEFINED
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 class Header : Parcelable {
     var id = HEADER_ID_UNDEFINED
     @StringRes

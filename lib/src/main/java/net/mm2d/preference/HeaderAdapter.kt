@@ -22,9 +22,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.TintTypedArray
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class HeaderAdapter(
     context: Context,
     objects: List<Header>
