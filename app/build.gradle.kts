@@ -35,7 +35,6 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.preference:preference:1.1.1")
-    testImplementation("junit:junit:4.13")
 }
 
 dependencyUpdates()
