@@ -72,6 +72,8 @@ But **the native Fragment is deprecated**.
 
 ## How to use
 
+*jCenter will close in May. I am currently considering migrating to another hosting service. Please wait.*
+
 Download from jCenter. Add dependencies, as following.
 ```gradle
 repositories {
