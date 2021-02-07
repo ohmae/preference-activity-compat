@@ -3,8 +3,7 @@
 [![GitHub release](https://img.shields.io/github/release/ohmae/preference-activity-compat.svg)](https://github.com/ohmae/preference-activity-compat/releases)
 [![GitHub issues](https://img.shields.io/github/issues/ohmae/preference-activity-compat.svg)](https://github.com/ohmae/preference-activity-compat/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/ohmae/preference-activity-compat.svg)](https://github.com/ohmae/preference-activity-compat/issues?q=is%3Aissue+is%3Aclosed)
-[![Maven Repository](https://img.shields.io/badge/maven-jcenter-brightgreen.svg)](https://bintray.com/ohmae/maven/net.mm2d.preference)
-[![Maven metadata URI](https://img.shields.io/maven-metadata/v/https/jcenter.bintray.com/net/mm2d/preference/maven-metadata.xml.svg)](https://bintray.com/ohmae/maven/net.mm2d.preference)
+![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.preference/preference)
 
 This is a compatibility library of `PreferenceActivity`.
 
@@ -72,15 +71,31 @@ But **the native Fragment is deprecated**.
 
 ## How to use
 
-*jCenter will close in May. I am currently considering migrating to another hosting service. Please wait.*
+jCenter will close in May. In 0.2.6 moved to mavenCentral from jcenter.  
+Please note that the **groupID has changed**
 
-Download from jCenter. Add dependencies, as following.
+Download from mavenCentral.  
+The latest version is: ![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.preference/preference)
+
+```gradle
+dependencies {
+    implementation 'net.mm2d.preference:preference:0.2.6'
+}
+```
+
+Versions below 0.2.6 were distributed with jCenter.
+However, jCenter will close and old versions are not migrated to mavenCentral.
+If you need an older version, please use the Github Pages repository.
+
 ```gradle
 repositories {
-    jcenter()
+    maven { url = URI("https://ohmae.github.com/maven") }
 }
+```
+
+```gradle
 dependencies {
-    implementation 'net.mm2d:preference:0.2.2'
+    implementation 'net.mm2d.preference:preference:0.2.5'
 }
 ```
 
