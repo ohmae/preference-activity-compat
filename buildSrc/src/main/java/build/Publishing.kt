@@ -1,6 +1,5 @@
-package build.internal
+package build
 
-import build.ProjectProperties
 import groovy.util.Node
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectProvider
@@ -29,7 +28,7 @@ private val NamedDomainObjectContainer<Configuration>.api: NamedDomainObjectProv
 private val NamedDomainObjectContainer<Configuration>.implementation: NamedDomainObjectProvider<Configuration>
     get() = named<Configuration>("implementation")
 
-internal fun Project.publishingSettings() {
+fun Project.publishingSettings() {
     publishing {
         publications {
             create<MavenPublication>("bintray") {

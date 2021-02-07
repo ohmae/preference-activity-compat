@@ -1,10 +1,12 @@
 import build.*
+import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     id("com.android.library")
     id("kotlin-android")
     maven
     `maven-publish`
+    id("org.jetbrains.dokka")
     id("com.jfrog.bintray")
     id("com.github.ben-manes.versions")
 }
@@ -32,6 +34,19 @@ android {
     }
 }
 
+tasks.named<DokkaTask>("dokkaHtml") {
+    outputDirectory.set(File(projectDir, "../docs/dokka"))
+}
+
+tasks.create("sourcesJar", Jar::class) {
+    archiveClassifier.set("sources")
+    from(android.sourceSets["main"].java.srcDirs)
+}
+
+artifacts {
+    archives(tasks.named<Jar>("sourcesJar"))
+}
+
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("androidx.appcompat:appcompat:1.2.0")
@@ -39,4 +54,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.3.2")
 }
 
-commonSettings()
+uploadArchivesSettings()
+publishingSettings()
+bintraySettings()
+dependencyUpdatesSettings()

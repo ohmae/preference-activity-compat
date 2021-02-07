@@ -1,4 +1,4 @@
-import build.dependencyUpdates
+import build.dependencyUpdatesSettings
 
 plugins {
     id("com.android.application")
@@ -36,4 +36,4 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.1.1")
 }
 
-dependencyUpdates()
+dependencyUpdatesSettings()

@@ -1,6 +1,5 @@
-package build.internal
+package build
 
-import build.ProjectProperties
 import com.jfrog.bintray.gradle.BintrayExtension
 import org.gradle.api.Project
 import org.gradle.api.internal.HasConvention
@@ -16,7 +15,7 @@ private val Project.base: BasePluginConvention
     get() = ((this as? Project)?.convention
         ?: (this as HasConvention).convention).getPluginByName("base")
 
-internal fun Project.bintraySettings() {
+fun Project.bintraySettings() {
     bintray {
         user = project.findProperty("bintray_user") as? String ?: ""
         key = project.findProperty("bintray_key") as? String ?: ""

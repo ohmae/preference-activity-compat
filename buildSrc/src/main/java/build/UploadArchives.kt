@@ -1,6 +1,5 @@
-package build.internal
+package build
 
-import build.ProjectProperties
 import org.gradle.api.Project
 import org.gradle.api.internal.HasConvention
 import org.gradle.api.plugins.BasePluginConvention
@@ -13,7 +12,7 @@ private val Project.base: BasePluginConvention
     get() = ((this as? Project)?.convention
         ?: (this as HasConvention).convention).getPluginByName("base")
 
-internal fun Project.uploadArchivesSettings() {
+fun Project.uploadArchivesSettings() {
     tasks.named<Upload>("uploadArchives") {
         repositories.withGroovyBuilder {
             "mavenDeployer" {
