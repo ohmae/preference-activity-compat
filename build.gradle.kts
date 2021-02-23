@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         google()
+        gradlePluginPortal()
         jcenter()
     }
     dependencies {
@@ -15,7 +16,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
