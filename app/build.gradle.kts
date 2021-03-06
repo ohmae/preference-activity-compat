@@ -31,7 +31,6 @@ android {
 
 dependencies {
     api(project(":lib"))
-    implementation(kotlin("stdlib"))
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.preference:preference-ktx:1.1.1")
 }
