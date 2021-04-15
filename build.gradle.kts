@@ -2,7 +2,6 @@ buildscript {
     repositories {
         google()
         gradlePluginPortal()
-        jcenter()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.1.3")
@@ -17,6 +16,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
     }
 }
 

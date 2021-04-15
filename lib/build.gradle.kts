@@ -4,7 +4,6 @@ import org.jetbrains.dokka.gradle.DokkaTask
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    maven
     `maven-publish`
     signing
     id("org.jetbrains.dokka")
@@ -64,6 +63,5 @@ dependencies {
     implementation("androidx.core:core-ktx:1.3.2")
 }
 
-uploadArchivesSettings()
 publishingSettings()
 dependencyUpdatesSettings()
