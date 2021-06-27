@@ -10,7 +10,7 @@ plugins {
     id("com.github.ben-manes.versions")
 }
 
-base.archivesBaseName = "preference"
+base.archivesName.set("preference")
 group = ProjectProperties.groupId
 version = ProjectProperties.versionName
 
