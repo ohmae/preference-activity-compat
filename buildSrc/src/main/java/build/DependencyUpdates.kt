@@ -5,7 +5,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.named
 
 fun Project.dependencyUpdatesSettings() {
-    tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
+    tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
         rejectVersionIf { !isStable(candidate.version) }
     }
 }
