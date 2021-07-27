@@ -43,6 +43,7 @@ internal class PreferenceActivityCompatDelegate(
     private lateinit var listFooter: FrameLayout
     private lateinit var prefsContainer: ViewGroup
     private lateinit var headersContainer: ViewGroup
+    private var activityTitle: CharSequence? = null
     private var breadCrumbTitle: TextView? = null
     private var singlePane: Boolean = false
     private var currentHeader: Header? = null
@@ -98,6 +99,7 @@ internal class PreferenceActivityCompatDelegate(
         headersContainer = findViewById(R.id.headers)!!
 
         singlePane = connector.onIsHidingHeaders() || !connector.onIsMultiPane()
+        activityTitle = activity.title
         val breadCrumbSection: View? = findViewById(R.id.breadcrumb_section)
         val breadCrumbTitle: TextView? = findViewById(R.id.bread_crumb_title)
         if (singlePane && breadCrumbSection != null && breadCrumbTitle != null) {
@@ -192,7 +194,7 @@ internal class PreferenceActivityCompatDelegate(
         currentHeader = null
         prefsContainer.visibility = View.GONE
         headersContainer.visibility = View.VISIBLE
-        showBreadCrumbs(activity.title)
+        showBreadCrumbs(activityTitle)
         listView.clearChoices()
         return true
     }
