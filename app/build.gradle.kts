@@ -31,7 +31,7 @@ android {
 
 dependencies {
     api(project(":lib"))
-    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("androidx.preference:preference-ktx:1.1.1")
 }
 
