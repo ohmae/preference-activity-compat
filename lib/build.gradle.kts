@@ -1,4 +1,6 @@
-import build.*
+import build.ProjectProperties
+import build.dependencyUpdatesSettings
+import build.publishingSettings
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
@@ -15,13 +17,11 @@ group = ProjectProperties.groupId
 version = ProjectProperties.versionName
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
 
     defaultConfig {
-        minSdkVersion(14)
-        targetSdkVersion(30)
-        versionCode = ProjectProperties.versionCode
-        versionName = ProjectProperties.versionName
+        minSdk = 14
+        targetSdk = 30
         consumerProguardFile("proguard-rules.pro")
     }
     compileOptions {

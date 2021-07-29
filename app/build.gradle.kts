@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
 
     defaultConfig {
         applicationId = "net.mm2d.preference.sample"
-        minSdkVersion(14)
-        targetSdkVersion(30)
+        minSdk = 14
+        targetSdk = 30
         versionCode = 1
         versionName = "1.0"
         vectorDrawables.useSupportLibrary = true
