@@ -1,2 +1,2 @@
-include(":lib")
+include(":activity")
 include(":app")
