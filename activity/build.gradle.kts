@@ -17,11 +17,11 @@ group = ProjectProperties.groupId
 version = ProjectProperties.versionName
 
 android {
-    compileSdk = 30
+    compileSdk = 31
 
     defaultConfig {
         minSdk = 14
-        targetSdk = 30
+        targetSdk = 31
         consumerProguardFile("proguard-rules.pro")
     }
     compileOptions {
@@ -58,7 +58,7 @@ artifacts {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("androidx.preference:preference-ktx:1.1.1")
     implementation("androidx.core:core-ktx:1.7.0")
 }

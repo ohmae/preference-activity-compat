@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 31
 
     defaultConfig {
         applicationId = "net.mm2d.preference.sample"
         minSdk = 14
-        targetSdk = 30
+        targetSdk = 31
         versionCode = 1
         versionName = "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -31,7 +31,7 @@ android {
 
 dependencies {
     api(project(":activity"))
-    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("androidx.preference:preference-ktx:1.1.1")
 }
 
