@@ -320,7 +320,9 @@ internal class PreferenceActivityCompatDelegate(
     }
 
     fun startPreferenceFragment(preference: Preference) {
-        val fragment = instantiateFragment(preference.fragment, preference.extras)
+        val fragmentName = preference.fragment
+        if (fragmentName.isNullOrEmpty()) return
+        val fragment = instantiateFragment(fragmentName, preference.extras)
         fragmentManager.beginTransaction()
             .replace(R.id.preference, fragment)
             .setBreadCrumbTitle(preference.title)

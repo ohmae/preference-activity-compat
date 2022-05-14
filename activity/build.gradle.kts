@@ -19,6 +19,7 @@ version = ProjectProperties.versionName
 android {
     compileSdk = 31
 
+    namespace = "net.mm2d.preference"
     defaultConfig {
         minSdk = 14
         targetSdk = 31
@@ -58,8 +59,8 @@ artifacts {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("androidx.appcompat:appcompat:1.4.0")
-    implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.core:core-ktx:1.7.0")
 }
 

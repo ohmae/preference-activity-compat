@@ -9,6 +9,7 @@ plugins {
 android {
     compileSdk = 31
 
+    namespace = "net.mm2d.preference.sample"
     defaultConfig {
         applicationId = "net.mm2d.preference.sample"
         minSdk = 14
@@ -31,8 +32,8 @@ android {
 
 dependencies {
     api(project(":activity"))
-    implementation("androidx.appcompat:appcompat:1.4.0")
-    implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.preference:preference-ktx:1.2.0")
 }
 
 dependencyUpdatesSettings()
