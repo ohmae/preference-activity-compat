@@ -17,12 +17,12 @@ group = ProjectProperties.groupId
 version = ProjectProperties.versionName
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     namespace = "net.mm2d.preference"
     defaultConfig {
         minSdk = 14
-        targetSdk = 31
+        targetSdk = 33
         consumerProguardFile("proguard-rules.pro")
     }
     compileOptions {
