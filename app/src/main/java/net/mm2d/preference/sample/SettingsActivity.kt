@@ -1,10 +1,7 @@
 package net.mm2d.preference.sample
 
-import android.annotation.TargetApi
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceChangeListener
@@ -35,12 +32,11 @@ class SettingsActivity : PreferenceActivityCompat() {
             || NotificationPreferenceFragment::class.java.name == fragmentName)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            return true
+    override fun onSupportNavigateUp(): Boolean {
+        if (!super.onSupportNavigateUp()) {
+            finish()
         }
-        return super.onOptionsItemSelected(item)
+        return true
     }
 
     class GeneralPreferenceFragment : PreferenceFragmentCompat() {
@@ -58,7 +54,6 @@ class SettingsActivity : PreferenceActivityCompat() {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     class NotificationPreferenceFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.pref_notification)
@@ -66,7 +61,6 @@ class SettingsActivity : PreferenceActivityCompat() {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     class DataSyncPreferenceFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.pref_data_sync)

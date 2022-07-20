@@ -19,6 +19,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.annotation.XmlRes
 import androidx.fragment.app.Fragment
@@ -31,7 +32,6 @@ import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_NO_HEADERS
 import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_SHOW_FRAGMENT
 import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_SHOW_FRAGMENT_ARGUMENTS
 import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_SHOW_FRAGMENT_TITLE
-import java.util.*
 
 internal class PreferenceActivityCompatDelegate(
     private val activity: FragmentActivity,
@@ -160,6 +160,7 @@ internal class PreferenceActivityCompatDelegate(
         } else if (_headers.size > 0) {
             currentHeader?.let { setSelectedHeader(it) }
         }
+        updateOnBackPressedCallback()
     }
 
     fun onDestroy() {
@@ -184,19 +185,24 @@ internal class PreferenceActivityCompatDelegate(
         currentHeader?.let { setSelectedHeader(it) }
     }
 
-    fun onBackPressed(): Boolean {
-        val manager = fragmentManager
-        if (currentHeader == null || isMultiPane || manager.backStackEntryCount != 0) {
-            return false
+    val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            fragment?.let {
+                fragmentManager.beginTransaction().remove(it).commitAllowingStateLoss()
+            }
+            fragment = null
+            currentHeader = null
+            prefsContainer.visibility = View.GONE
+            headersContainer.visibility = View.VISIBLE
+            showBreadCrumbs(activityTitle)
+            listView.clearChoices()
+            updateOnBackPressedCallback()
         }
-        fragment?.let { manager.beginTransaction().remove(it).commitAllowingStateLoss() }
-        fragment = null
-        currentHeader = null
-        prefsContainer.visibility = View.GONE
-        headersContainer.visibility = View.VISIBLE
-        showBreadCrumbs(activityTitle)
-        listView.clearChoices()
-        return true
+    }
+
+    private fun updateOnBackPressedCallback() {
+        onBackPressedCallback.isEnabled =
+            currentHeader != null && !isMultiPane && fragmentManager.backStackEntryCount == 0
     }
 
     fun hasHeaders(): Boolean = headersContainer.visibility == View.VISIBLE
@@ -301,6 +307,7 @@ internal class PreferenceActivityCompatDelegate(
             listView.clearChoices()
         }
         showBreadCrumbs(header)
+        updateOnBackPressedCallback()
     }
 
     private fun showBreadCrumbs(header: Header) {

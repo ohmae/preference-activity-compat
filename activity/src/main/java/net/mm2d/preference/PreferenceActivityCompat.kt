@@ -53,6 +53,7 @@ open class PreferenceActivityCompat : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         delegate = PreferenceActivityCompatDelegate(this, this)
         delegate.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(delegate.onBackPressedCallback)
     }
 
     override fun onDestroy() {
@@ -68,13 +69,6 @@ open class PreferenceActivityCompat : AppCompatActivity(),
     override fun onRestoreInstanceState(state: Bundle) {
         super.onRestoreInstanceState(state)
         delegate.onRestoreInstanceState(state)
-    }
-
-    override fun onBackPressed() {
-        if (delegate.onBackPressed()) {
-            return
-        }
-        super.onBackPressed()
     }
 
     /**

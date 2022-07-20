@@ -32,7 +32,7 @@ android {
 
 dependencies {
     api(project(":activity"))
-    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("androidx.preference:preference-ktx:1.2.0")
 }
 

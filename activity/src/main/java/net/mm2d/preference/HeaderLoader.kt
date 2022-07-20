@@ -45,7 +45,9 @@ internal object HeaderLoader {
     ) {
         val attrs = Xml.asAttributeSet(parser)
         @Suppress("ControlFlowWithEmptyBody")
-        while (parser.next().let { it != XmlPullParser.END_DOCUMENT && it != XmlPullParser.START_TAG });
+        while (parser.next()
+                .let { it != XmlPullParser.END_DOCUMENT && it != XmlPullParser.START_TAG }
+        );
         if ("preference-headers" != parser.name) {
             throw RuntimeException(
                 "XML document must start with <preference-headers> tag; found"
