@@ -1,0 +1,51 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:net.mm2d.preference////PointingToDeclaration/activity/net.mm2d.preference/index.html
+$dokka.location:net.mm2d.preference/Header.CREATOR///PointingToDeclaration/activity/net.mm2d.preference/-header/-c-r-e-a-t-o-r/index.html
+$dokka.location:net.mm2d.preference/Header.CREATOR/createFromParcel/#android.os.Parcel/PointingToDeclaration/activity/net.mm2d.preference/-header/-c-r-e-a-t-o-r/create-from-parcel.html
+$dokka.location:net.mm2d.preference/Header.CREATOR/newArray/#kotlin.Int/PointingToDeclaration/activity/net.mm2d.preference/-header/-c-r-e-a-t-o-r/new-array.html
+$dokka.location:net.mm2d.preference/Header///PointingToDeclaration/activity/net.mm2d.preference/-header/index.html
+$dokka.location:net.mm2d.preference/Header/Header/#/PointingToDeclaration/activity/net.mm2d.preference/-header/-header.html
+$dokka.location:net.mm2d.preference/Header/breadCrumbTitle/#/PointingToDeclaration/activity/net.mm2d.preference/-header/bread-crumb-title.html
+$dokka.location:net.mm2d.preference/Header/breadCrumbTitleRes/#/PointingToDeclaration/activity/net.mm2d.preference/-header/bread-crumb-title-res.html
+$dokka.location:net.mm2d.preference/Header/describeContents/#/PointingToDeclaration/activity/net.mm2d.preference/-header/describe-contents.html
+$dokka.location:net.mm2d.preference/Header/extras/#/PointingToDeclaration/activity/net.mm2d.preference/-header/extras.html
+$dokka.location:net.mm2d.preference/Header/fragment/#/PointingToDeclaration/activity/net.mm2d.preference/-header/fragment.html
+$dokka.location:net.mm2d.preference/Header/fragmentArguments/#/PointingToDeclaration/activity/net.mm2d.preference/-header/fragment-arguments.html
+$dokka.location:net.mm2d.preference/Header/getBreadCrumbTitle/#android.content.res.Resources/PointingToDeclaration/activity/net.mm2d.preference/-header/get-bread-crumb-title.html
+$dokka.location:net.mm2d.preference/Header/getSummary/#android.content.res.Resources/PointingToDeclaration/activity/net.mm2d.preference/-header/get-summary.html
+$dokka.location:net.mm2d.preference/Header/getTitle/#android.content.res.Resources/PointingToDeclaration/activity/net.mm2d.preference/-header/get-title.html
+$dokka.location:net.mm2d.preference/Header/iconRes/#/PointingToDeclaration/activity/net.mm2d.preference/-header/icon-res.html
+$dokka.location:net.mm2d.preference/Header/id/#/PointingToDeclaration/activity/net.mm2d.preference/-header/id.html
+$dokka.location:net.mm2d.preference/Header/intent/#/PointingToDeclaration/activity/net.mm2d.preference/-header/intent.html
+$dokka.location:net.mm2d.preference/Header/summary/#/PointingToDeclaration/activity/net.mm2d.preference/-header/summary.html
+$dokka.location:net.mm2d.preference/Header/summaryRes/#/PointingToDeclaration/activity/net.mm2d.preference/-header/summary-res.html
+$dokka.location:net.mm2d.preference/Header/title/#/PointingToDeclaration/activity/net.mm2d.preference/-header/title.html
+$dokka.location:net.mm2d.preference/Header/titleRes/#/PointingToDeclaration/activity/net.mm2d.preference/-header/title-res.html
+$dokka.location:net.mm2d.preference/Header/writeToParcel/#android.os.Parcel#kotlin.Int/PointingToDeclaration/activity/net.mm2d.preference/-header/write-to-parcel.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat.Companion///PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/-companion/index.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat.Companion/EXTRA_NO_HEADERS/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/-companion/-e-x-t-r-a_-n-o_-h-e-a-d-e-r-s.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat.Companion/EXTRA_SHOW_FRAGMENT/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/-companion/-e-x-t-r-a_-s-h-o-w_-f-r-a-g-m-e-n-t.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat.Companion/EXTRA_SHOW_FRAGMENT_ARGUMENTS/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/-companion/-e-x-t-r-a_-s-h-o-w_-f-r-a-g-m-e-n-t_-a-r-g-u-m-e-n-t-s.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat.Companion/EXTRA_SHOW_FRAGMENT_SHORT_TITLE/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/-companion/-e-x-t-r-a_-s-h-o-w_-f-r-a-g-m-e-n-t_-s-h-o-r-t_-t-i-t-l-e.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat.Companion/EXTRA_SHOW_FRAGMENT_TITLE/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/-companion/-e-x-t-r-a_-s-h-o-w_-f-r-a-g-m-e-n-t_-t-i-t-l-e.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat///PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/index.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/PreferenceActivityCompat/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/-preference-activity-compat.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/hasHeaders/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/has-headers.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/headers/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/headers.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/invalidateHeaders/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/invalidate-headers.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/isMultiPane/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/is-multi-pane.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/isValidFragment/#kotlin.String?/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/is-valid-fragment.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/loadHeadersFromResource/#kotlin.Int#kotlin.collections.MutableList[net.mm2d.preference.Header]/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/load-headers-from-resource.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/onBuildHeaders/#kotlin.collections.MutableList[net.mm2d.preference.Header]/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/on-build-headers.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/onBuildStartFragmentIntent/#kotlin.String#android.os.Bundle?#kotlin.Int#kotlin.Int/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/on-build-start-fragment-intent.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/onIsHidingHeaders/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/on-is-hiding-headers.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/onIsMultiPane/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/on-is-multi-pane.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/onPreferenceStartFragment/#androidx.preference.PreferenceFragmentCompat#androidx.preference.Preference/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/on-preference-start-fragment.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/selectedItemPosition/#/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/selected-item-position.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/setListFooter/#android.view.View/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/set-list-footer.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/startWithFragment/#kotlin.String#android.os.Bundle?#androidx.fragment.app.Fragment?#kotlin.Int#kotlin.Int#kotlin.Int/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/start-with-fragment.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/switchToHeader/#kotlin.String#android.os.Bundle?/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/switch-to-header.html
+$dokka.location:net.mm2d.preference/PreferenceActivityCompat/switchToHeader/#net.mm2d.preference.Header/PointingToDeclaration/activity/net.mm2d.preference/-preference-activity-compat/switch-to-header.html
+net.mm2d.preference
+
