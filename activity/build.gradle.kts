@@ -59,9 +59,9 @@ artifacts {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("androidx.appcompat:appcompat:1.6.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.core:core-ktx:1.9.0")
 }
 
 publishingSettings()
