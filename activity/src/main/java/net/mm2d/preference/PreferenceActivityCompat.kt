@@ -114,6 +114,18 @@ open class PreferenceActivityCompat : AppCompatActivity(),
         }
 
     /**
+     * Called when the user selects an item in the header list.  The default
+     * implementation will call either
+     * {@link #startWithFragment(String, Bundle, Fragment, int, int, int)}
+     * or {@link #switchToHeader(Header)} as appropriate.
+     *
+     * @param header The header that was selected.
+     * @param position The header's position in the list.
+     * @return if it returns true, default implementation won't be executed
+     */
+    open fun onHeaderClick(header: Header, position: Int): Boolean = false
+
+    /**
      * Returns true if this activity is currently showing the header list.
      */
     open fun hasHeaders(): Boolean = delegate.hasHeaders()
