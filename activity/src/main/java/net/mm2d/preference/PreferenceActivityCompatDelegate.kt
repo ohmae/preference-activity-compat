@@ -23,7 +23,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.annotation.XmlRes
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle.State
@@ -34,7 +33,7 @@ import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_SHOW_FRAGMEN
 import net.mm2d.preference.PreferenceActivityCompat.Companion.EXTRA_SHOW_FRAGMENT_TITLE
 
 internal class PreferenceActivityCompatDelegate(
-    private val activity: FragmentActivity,
+    private val activity: PreferenceActivityCompat,
     private val connector: Connector
 ) {
     private val _headers = ArrayList<Header>()
@@ -231,10 +230,12 @@ internal class PreferenceActivityCompatDelegate(
 
     private fun onListItemClick(position: Int) {
         if (!isResumed) return
-        (listAdapter?.getItem(position) as? Header)?.let { onHeaderClick(it) }
+        (listAdapter?.getItem(position) as? Header)?.let { onHeaderClick(it, position) }
     }
 
-    private fun onHeaderClick(header: Header) {
+    private fun onHeaderClick(header: Header, position: Int) {
+        if(activity.onHeaderClick(header, position)) return
+
         if (header.fragment != null) {
             switchToHeader(header)
         } else {
