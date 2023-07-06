@@ -102,6 +102,9 @@ fun Project.publishingSettings() {
     signing {
         sign(publishing.publications["mavenJava"])
     }
+    tasks.named("signMavenJavaPublication") {
+        dependsOn("bundleReleaseAar")
+    }
 }
 
 private fun appendDependency(
