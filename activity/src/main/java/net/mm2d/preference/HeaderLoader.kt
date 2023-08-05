@@ -140,6 +140,7 @@ internal object HeaderLoader {
                     context.resources.parseBundleExtra("extra", attrs, bundle)
                     skipCurrentTag(parser)
                 }
+
                 "intent" -> header.intent = Intent.parseIntent(context.resources, parser, attrs)
                 else -> skipCurrentTag(parser)
             }

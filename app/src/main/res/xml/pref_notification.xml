@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <PreferenceCategory
-        android:title="@string/pref_title_new_message_notifications"
-        >
+    <PreferenceCategory android:title="@string/pref_title_new_message_notifications">
         <!--suppress AndroidElementNotAllowed -->
         <SwitchPreferenceCompat
             android:defaultValue="true"

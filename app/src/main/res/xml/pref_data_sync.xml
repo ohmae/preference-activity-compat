@@ -18,7 +18,7 @@
         android:title="@string/pref_title_system_sync_settings"
         app:iconSpaceReserved="false"
         >
-        <intent android:action="android.settings.SYNC_SETTINGS"/>
+        <intent android:action="android.settings.SYNC_SETTINGS" />
     </Preference>
 
 </PreferenceScreen>

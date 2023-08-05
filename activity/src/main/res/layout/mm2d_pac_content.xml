@@ -47,7 +47,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/mm2d_pac_vertical_divider"/>
+    <include layout="@layout/mm2d_pac_vertical_divider" />
 
     <LinearLayout
         android:id="@+id/preference_frame"
@@ -57,7 +57,7 @@
         android:orientation="vertical"
         >
 
-        <include layout="@layout/mm2d_pac_breadcrumbs"/>
+        <include layout="@layout/mm2d_pac_breadcrumbs" />
 
         <FrameLayout
             android:id="@+id/preference"

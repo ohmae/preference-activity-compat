@@ -1,4 +1,5 @@
-<preference-headers xmlns:app="http://schemas.android.com/apk/res-auto">
+<preference-headers
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <header
         app:fragment="net.mm2d.preference.sample.SettingsActivity$GeneralPreferenceFragment"

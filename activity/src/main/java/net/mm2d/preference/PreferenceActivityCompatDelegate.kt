@@ -234,7 +234,7 @@ internal class PreferenceActivityCompatDelegate(
     }
 
     private fun onHeaderClick(header: Header, position: Int) {
-        if(activity.onHeaderClick(header, position)) return
+        if (activity.onHeaderClick(header, position)) return
 
         if (header.fragment != null) {
             switchToHeader(header)
