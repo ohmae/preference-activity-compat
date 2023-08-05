@@ -1,3 +1,8 @@
+*This Library is EOL. Please use [PreferenceHeaderFragmentCompat](https://developer.android.com/reference/androidx/preference/PreferenceHeaderFragmentCompat) instead.*
+===
+
+---
+
 # PreferenceActivityCompat
 [![license](https://img.shields.io/github/license/ohmae/preference-activity-compat.svg)](./LICENSE)
 [![GitHub release](https://img.shields.io/github/release/ohmae/preference-activity-compat.svg)](https://github.com/ohmae/preference-activity-compat/releases)
